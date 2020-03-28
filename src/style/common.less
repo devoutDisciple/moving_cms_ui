@@ -1,0 +1,116 @@
+.width_height{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+body, html, #root{
+    .width_height;
+}
+.common{
+	padding: 20px;
+	height: 100%;
+	overflow-y: auto;
+	.common_search{
+		height: 100px;
+		padding-top: 30px;
+		border: 1px solid #e8e7e8;
+		// box-shadow: 10px 3px 10px #e8e7e8;
+		padding-left: 30px;
+		.common_search_form{
+			button{
+				margin: 0 10px;
+			}
+		}
+	}
+	.common_content{
+		margin-top: 10px;
+		min-height: 100px;
+		.common_table_span{
+			a{
+				margin: 0 10px;
+			}
+		}
+	}
+}
+
+.common_dialog{
+	.ant-modal-header{
+		text-align: center;
+	}
+	.campus_container{
+		min-height: 30px;
+		.campus_container_label{
+			text-align: right;
+			color: #333;
+		}
+		.campus_container_label_require::before{
+			display: inline-block;
+			margin-right: 4px;
+			color: #f5222d;
+			font-size: 12px;
+			font-family: SimSun,sans-serif;
+			line-height: 1;
+			content: '*';
+		}
+		.campus_container_btn{
+			text-align: center;
+			button{
+				width: 100px!important;
+			}
+		}
+		#campus_tree{
+			padding-left: 100px;
+
+		}
+		.campus_tree_icon{
+			color: 	#1890ff;
+			font-size: 14px;
+		}
+	}
+}
+.common_max_dialog{
+	width: 500px!important;
+}
+.common_dialog_time{
+	.ant-time-picker{
+		width: 100%;
+	}
+}
+.common_table_ellipse{
+	max-width: 200px;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.common_max_table_ellipse{
+	max-width: 500px;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.common_cell_green{
+	color: green;
+}
+.common_cell_red{
+	color: red;
+}
+.common_table_img{
+	height: 30px;
+}
+.swiper_dialog_preview{
+	img{
+		width: 100%;
+	}
+}
+.common_table_tooltip{
+	max-width: 100px;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.common_table_tooltip_row{
+	height: 50%;
+}

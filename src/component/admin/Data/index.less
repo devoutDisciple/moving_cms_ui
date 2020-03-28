@@ -1,0 +1,64 @@
+.data{
+	padding: 10px;
+	background: #f0f2f5;
+	overflow-y: auto;
+	.data_cart{
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 20px;
+		.data_cart_chunk{
+			padding: 10px;
+			width: 24%;
+			height: 126px;
+			background: #fff;
+			text-align: center;
+			box-shadow: 1px 1px 8px #bdbfc1;
+			.data_cart_chunk_title{
+				height: 25px;
+    			color: #8a8a8a;
+			}
+			.data_cart_chunk_number {
+				font-size: 36px;
+				height: 54px;
+			}
+		}
+	}
+	.data_common_detail{
+		background: #fff;
+		margin: 10px 0;
+		height: 370px;
+		border: 1px solid #e8e7e8;
+		position: relative;
+		.chart_empty{
+			position: absolute;
+			left: 0;
+			top: 52px;
+			width: 100%;
+			height: 294px;
+			background: #fff;
+			line-height: 294px;
+			text-align: center;
+			color: #8a8a8a;
+		}
+		.data_common_detail_title{
+			border-bottom: 1px solid #e8e7e8;
+			height: 50px;
+			line-height: 50px;
+			font-size: 16px;
+			padding: 0 24px;
+			.data_common_detail_title_left{
+				float: left;
+			}
+			.data_common_detail_title_right{
+				float: right;
+				button{
+					margin: 0 10px;
+				}
+			}
+		}
+		.data_common_detail_content{
+			height: 320px;
+			padding-bottom: 20px;
+		}
+	}
+}
