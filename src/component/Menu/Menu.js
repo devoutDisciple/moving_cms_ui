@@ -48,6 +48,10 @@ export default class MyMenu extends React.Component {
 						<Icon type="inbox" />
 						<span>数据汇总</span>
 					</Menu.Item>
+					<Menu.Item key="/home/shop">
+						<Icon type="pie-chart" />
+						<span>店铺管理</span>
+					</Menu.Item>
 					<Menu.Item key="/home/rate">
 						<Icon type="inbox" />
 						<span>费率管理</span>
@@ -68,10 +72,7 @@ export default class MyMenu extends React.Component {
 						<Icon type="pie-chart" />
 						<span>首页轮播图</span>
 					</Menu.Item>
-					<Menu.Item key="/home/shop">
-						<Icon type="pie-chart" />
-						<span>厨房管理</span>
-					</Menu.Item>
+
 					<Menu.Item key="/home/goods">
 						<Icon type="inbox" />
 						<span>菜品管理</span>

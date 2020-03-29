@@ -127,22 +127,5 @@ class GlobalStore {
 	 		console.log(error);
 	 	}
 	 }
-
-	//  获取校区
-	@action
-	 async getCampus() {
-	 	try {
-	 		let res = await request.get('/position/all');
-	 		runInAction(() => {
-				let data = res.data || [];
-				data.map(item => {
-					item.key = item.id;
-				});
-				this.setCampus(data || []);
-	 		});
-	 	} catch (error) {
-	 		console.log(error);
-	 	}
-	 }
 }
 export default new GlobalStore();

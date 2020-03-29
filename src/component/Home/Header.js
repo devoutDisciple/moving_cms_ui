@@ -14,20 +14,9 @@ export default class MyHeader extends React.Component{
 	}
 
 	state = {
-		selectedKeys: []
 	}
 
-	async componentDidMount() {
-		await this.globalStore.getCampus();
-		let {campus} = this.globalStore;
-		let localCampus = localStorage.getItem('campus');
-		let selectedKeys = localCampus ? [localCampus] : campus && campus.length != 0 ? [String(campus[0].name)] : [];
-		this.setState({
-			selectedKeys: selectedKeys,
-		}, () => {
-			localStorage.setItem('campus', selectedKeys[0]);
-		});
-	}
+	async componentDidMount() {}
 
 	// 退出登录
 	async logout() {

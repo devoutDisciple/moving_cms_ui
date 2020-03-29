@@ -19,9 +19,7 @@ class Login extends React.Component{
 
     btnClick() {
     	this.props.form.validateFields((err, values) => {
-    		if (!err) {
-    			this.globalStore.login(values);
-    		}
+    		if (!err) this.globalStore.login(values);
     	});
 
     }

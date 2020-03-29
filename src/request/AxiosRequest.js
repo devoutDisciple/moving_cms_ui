@@ -48,6 +48,10 @@ Axios.interceptors.response.use(function (res) {
 		location.hash = '/login';
 		return Promise.reject('请重新登录');
 	}
+	// 高德地图的请求
+	if(data.status == 1) {
+		return Promise.resolve(data);
+	}
 	if(data.code != 200) {
 		message.warning(data.message || '系统错误, 请稍后重试');
 		return Promise.reject(data.message || '系统错误, 请稍后重试');
@@ -70,14 +74,13 @@ Axios.interceptors.response.use(function (res) {
 
 export default {
 	get: (url = '', params = {}) => {
-		let campus = localStorage.getItem('campus') || '';
-		params.position = campus;
 		return new Promise((resolve, reject) => {
 			Axios({
 				method: 'get',
 				url: url,
 				params: params
 			}).then((res) => {
+				if(res.status == 1) return resolve(res); // 高德地图
 				if(res.code == 200) resolve(res);
 				else reject(res);
 			}).catch((err) => {
@@ -87,8 +90,6 @@ export default {
 		});
 	},
 	post: (url = '', params = {}) => {
-		let campus = localStorage.getItem('campus') || '';
-		params.position = campus;
 		return new Promise((resolve, reject) => {
 			Axios({
 				method: 'post',
@@ -104,8 +105,6 @@ export default {
 		});
 	},
 	put: (url = '', params = {}) => {
-		let campus = localStorage.getItem('campus') || '';
-		params.position = campus;
 		return new Promise((resolve, reject) => {
 			Axios({
 				method: 'put',
@@ -121,8 +120,6 @@ export default {
 		});
 	},
 	delete: (url = '', params = {}) => {
-		let campus = localStorage.getItem('campus') || '';
-		params.position = campus;
 		return new Promise((resolve, reject) => {
 			Axios({
 				method: 'delete',

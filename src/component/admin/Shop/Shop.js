@@ -4,6 +4,7 @@ import {
 	Button, Table, Popconfirm, message, Tooltip, Form, Col, Input
 } from 'antd';
 import AddDialog from './AddDialog';
+import MapDialog from './MapDialog';
 import UserDialog from './UserDialog';
 import EditorDialog from './EditorDialog';
 import Request from '../../../request/AxiosRequest';
@@ -20,6 +21,7 @@ class Shop extends React.Component{
 	}
 
 	state = {
+		addressDialogVisible: true,// 位置信息弹框
 		addDialogVisible: false,
 		editorDialogVisible: false,
 		editData: {},
@@ -110,43 +112,30 @@ class Shop extends React.Component{
 		this.setState({accountVisible: !this.state.accountVisible});
 	}
 
+	// 录入店铺位置
+	controllerMapDialogVisible() {
+		this.setState({addressDialogVisible: !this.state.addressDialogVisible});
+	}
+
 
 	render() {
 		const columns = [
 			{
-				title: '名称',
+				title: '店铺名称',
 				dataIndex: 'name',
 				key: 'name',
 				align: 'center'
 			},
 			{
-				title: '销售量',
-				dataIndex: 'sales',
-				key: 'sales',
+				title: '店铺经理',
+				dataIndex: 'manager',
+				key: 'manager',
 				align: 'center'
 			},
 			{
-				title: '起送价格',
-				dataIndex: 'start_price',
-				key: 'start_price',
-				align: 'center'
-			},
-			{
-				title: '配送费',
-				dataIndex: 'send_price',
-				key: 'send_price',
-				align: 'center'
-			},
-			{
-				title: '开店时间',
-				dataIndex: 'start_time',
-				key: 'start_time',
-				align: 'center'
-			},
-			{
-				title: '关店时间',
-				dataIndex: 'end_time',
-				key: 'end_time',
+				title: '电话',
+				dataIndex: 'phone',
+				key: 'phone',
 				align: 'center'
 			},
 			{
@@ -158,31 +147,6 @@ class Shop extends React.Component{
 					return <Tooltip placement="top" title={record.address}>
 						<span className='common_table_ellipse'>{record.address}</span>
 					   </Tooltip>;
-				}
-			},
-			{
-				title: '电话',
-				dataIndex: 'phone',
-				key: 'phone',
-				align: 'center'
-			},
-			{
-				title: '营收情况',
-				dataIndex: 'win',
-				key: 'win',
-				align: 'center',
-				render:() => {
-					return <span>暂无</span>;
-				}
-			},
-			{
-				title: '厨房状态',
-				dataIndex: 'status',
-				key: 'status',
-				align: 'center',
-				render:(text, record) => {
-					if(record.status == 1) return <span className='common_cell_green'>开启</span>;
-					return <span className='common_cell_red'>关闭</span>;
 				}
 			},
 			{
@@ -199,17 +163,7 @@ class Shop extends React.Component{
 				render:(text, record) => {
 					return <span className="common_table_span">
 						<a href="javascript:;" onClick={this.onEditorCampus.bind(this, record)}>修改</a>
-						{
-							record.status == 1 ?
-								<Popconfirm placement="top" title="是否确认关店" onConfirm={this.onConfirmCloseOrOpen.bind(this, record, 2)} okText="确认" cancelText="取消">
-									<a href="javascript:;" >关店</a>
-     							</Popconfirm>
-						 :
-						 		<Popconfirm placement="top" title="是否确认开店" onConfirm={this.onConfirmCloseOrOpen.bind(this, record, 1)} okText="确认" cancelText="取消">
-									<a href="javascript:;" >开店</a>
-     							</Popconfirm>
-						}
-
+						<a href="javascript:;" onClick={this.controllerMapDialogVisible.bind(this, record)}>位置录入</a>
 						<Popconfirm placement="top" title="是否确认删除" onConfirm={this.onConfirmDelete.bind(this, record)} okText="确认" cancelText="取消">
 							<a href="javascript:;" >删除</a>
      					</Popconfirm>
@@ -220,7 +174,7 @@ class Shop extends React.Component{
 			}
 		];
 		let {list} = this.shopStore,
-			{addDialogVisible, editorDialogVisible, editData, shopid, dataDialogVisible, accountVisible} = this.state;
+			{addressDialogVisible, addDialogVisible, editorDialogVisible, editData, shopid, dataDialogVisible, accountVisible} = this.state;
 		const formItemLayout = {
 				labelCol: { span: 8 },
 				wrapperCol: { span: 16 },
@@ -231,9 +185,9 @@ class Shop extends React.Component{
 					<Form className="common_search_form" {...formItemLayout}>
 						<Col span={6}>
 							<FormItem
-								label="厨房名称">
+								label="店铺名称">
 								{getFieldDecorator('name')(
-									<Input placeholder="请输入厨房名称" />
+									<Input placeholder="店铺名称模糊搜索" />
 								)}
 							</FormItem>
 						</Col>
@@ -284,6 +238,11 @@ class Shop extends React.Component{
 							shopid={shopid}
 							onControllerDataVisible={this.onControllerDataVisible.bind(this)}/>
 						: null
+				}
+				{
+					addressDialogVisible && <MapDialog
+						shopid={shopid}
+						onControllerMapDialog={this.controllerMapDialogVisible.bind(this)}/>
 				}
 			</div>
 		);
