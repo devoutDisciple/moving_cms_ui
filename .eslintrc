@@ -28,22 +28,14 @@
         }
       },
     "rules": {
-		"indent": [
-            "error",
-            "tab"
-        ],
         "linebreak-style": [
             "error",
             "unix"
         ],
-        "quotes": [
-            "error",
-            "double"
-        ],
         "semi": [
             "error",
             "always"
-		],
+        ],
 		"prettier/prettier": 2,
         "no-console": 0,
         "smart-tabs": 0,

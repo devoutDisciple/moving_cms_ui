@@ -1,49 +1,34 @@
-import {
-	observable,
-	action,
-	runInAction
-} from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import request from '../../request/AxiosRequest';
 
 class ShopStore {
-
-    // 轮播图list
-    @observable
+	// 轮播图list
+	@observable
 	list = [];
 
-	 // 校区list
-	 @observable
-	 campus = [];
-
-	 // 设置校区
-	 @action
-	 setCampus(data) {
-		 this.campus = data;
-	 }
-
 	@action
-	 setList(data) {
-    	this.list = data;
-	 }
+	setList(data) {
+		this.list = data;
+	}
 
 	// 获取所有厨房信息
 	@action
-	 async getAll(value) {
-	 	try {
-			 let shop = await request.get('/shop/all', value);
-	 		runInAction(() => {
-				 let data = shop.data || [];
-				 data.map(item => {
-					 item.key = item.id;
-				 });
-				 this.setList(shop.data || []);
-	 		});
-	 	} catch (error) {
-	 		console.log(error);
-	 	}
-	 }
+	async getAll(value) {
+		try {
+			let shop = await request.get('/shop/all', value);
+			runInAction(() => {
+				let data = shop.data || [];
+				data.map((item) => {
+					item.key = item.id;
+				});
+				this.setList(shop.data || []);
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
-	 // 新增商铺
+	// 新增商铺
 	@action
 	async addShop(data) {
 		try {
@@ -74,22 +59,5 @@ class ShopStore {
 			console.log(error);
 		}
 	}
-
-	  //  获取校区
-	  @action
-	   async getCampus(values) {
-		   try {
-			   let res = await request.get('/position/all', values);
-			   runInAction(() => {
-				  let data = res.data || [];
-				  data.map(item => {
-					  item.key = item.id;
-				  });
-				  this.setCampus(data || []);
-			   });
-		   } catch (error) {
-			   console.log(error);
-		   }
-	   }
 }
 export default new ShopStore();
