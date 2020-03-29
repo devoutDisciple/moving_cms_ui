@@ -40,9 +40,12 @@ let devConfig = {
 		contentBase: path.resolve(__dirname, '../dist'),
 		port: config.dev.port,
 		open: config.dev.openBrowser,
-		historyApiFallback: true
+		historyApiFallback: true,
+		inline: true,
+		hot: true,
 	},
-	devtool: 'inline-source-map',
+	// devtool: 'eval', eval-source-map
+	devtool: 'cheap-module-eval-source-map'
 };
 
 devConfig = Object.assign(baseConfig, devConfig);

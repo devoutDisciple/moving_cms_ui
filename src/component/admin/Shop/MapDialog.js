@@ -2,6 +2,7 @@ import React from 'react';
 import './index.less';
 import {Modal, message, Input, Form} from 'antd';
 import request from '../../../request/AxiosRequest';
+import config from '../../../config/config';
 import axios from 'axios';
 
 const FormItem = Form.Item;
@@ -21,16 +22,21 @@ class MapDialog extends React.Component {
 		value: '杭州市西溪水岸花苑'
 	};
 
-	componentDidMount() {
+	async componentDidMount() {
+		let {shopid} = this.props;
+		let response = await request.get('/shop/getShopDetailById', {shopid: shopid});
+		let shop = response.data || {};
 		setTimeout(() => {
-			let {longitude, latitude} = this.state;
+			let longitude = shop.longitude || config.site.longitude,
+				latitude = shop.latitude || config.site.latitude,
+				address = shop.address || config.site.name;
+			this.props.form.setFieldsValue({site: address});
 			this.reChartsMap(longitude, latitude);
 		}, 0);
 	}
 
 	// 输入的地理位置
 	async onInputAddress(value) {
-		console.log(value);
 		try {
 			axios.get(`https://restapi.amap.com/v3/geocode/geo?key=04b2e5e608f74b461c892db7ed3d64b6&address=${value}`,
 				{withCredentials: false}).then(res => {
@@ -59,6 +65,7 @@ class MapDialog extends React.Component {
 		this.map.on('click', (e) => {this.showInfoClick(e.lnglat.getLng(), e.lnglat.getLat());});
 	}
 
+	// 点击增加锚点
 	showInfoClick(longitude, latitude) {
 		this.setState({longitude, latitude});
 		axios.get(`https://restapi.amap.com/v3/geocode/regeo?key=04b2e5e608f74b461c892db7ed3d64b6&location=${longitude},${latitude}`,

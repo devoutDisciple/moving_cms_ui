@@ -20,7 +20,7 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react", "prettier"
     ],
     "settings": {
         "react": {
@@ -38,12 +38,13 @@
         ],
         "quotes": [
             "error",
-            "single"
+            "double"
         ],
         "semi": [
             "error",
             "always"
-        ],
+		],
+		"prettier/prettier": 2,
         "no-console": 0,
         "smart-tabs": 0,
         "no-mixed-spaces-and-tabs": 0,

@@ -96,7 +96,7 @@ class GlobalStore {
     				localStorage.setItem('campus', user.data.campus);
 				 }
 				 if(user.data.role == 1) {
-    				location.hash = '#/home/campus';
+    				location.hash = '#/home/shop';
 				 }
 				 this.setLogin(true);
 			 });

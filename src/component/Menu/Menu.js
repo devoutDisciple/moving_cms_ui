@@ -12,7 +12,7 @@ export default class MyMenu extends React.Component {
 	}
 
 	state = {
-		selectedKeys: '/home/campus'
+		selectedKeys: '/home/shop'
 	}
 
 	componentDidMount() {
