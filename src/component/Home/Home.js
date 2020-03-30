@@ -4,7 +4,7 @@ const { Sider, Content, Footer } = Layout;
 import Menu from '../Menu/Menu';
 import MyHeader from './Header';
 import { Route, Switch } from 'react-router-dom';
-import {inject, observer} from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import './index.less';
 import logo from '../../asserts/logo.png';
 
@@ -12,7 +12,7 @@ import logo from '../../asserts/logo.png';
 import Swiper from '../admin/Swiper/Swiper';
 import Campus from '../admin/Campus/Campus';
 import Shop from '../admin/Shop/Shop';
-import Goods from '../admin/Goods/Goods';
+import Cabinet from '../admin/Cabinet/Cabinet';
 import Member from '../admin/Member/Member';
 import Today from '../admin/Today/Today';
 import Order from '../admin/Order/Order';
@@ -32,63 +32,57 @@ import ShopData from '../shop/Data/Data';
 
 @inject('GlobalStore')
 @observer
-export default class MyLayout extends React.Component{
-
+export default class MyLayout extends React.Component {
 	constructor(props) {
 		super(props);
 		this.globalStore = this.props.GlobalStore;
 	}
 
-	componentDidMount() {
-	}
+	componentDidMount() {}
 
 	render() {
-		let {role} = this.globalStore.userinfo;
+		let { role } = this.globalStore.userinfo;
 		return (
 			<React.Fragment>
 				<Layout>
 					<Sider className="root_layout_sider">
-						<div className="root_layout_sider_header">
-							Moving Dry Cleaner
-						</div>
+						<div className="root_layout_sider_header">Moving Dry Cleaner</div>
 						<Menu />
 					</Sider>
 					<Content className="root_layout_content">
 						<MyHeader />
-						<div className='content'>
-							{
-								role == 1 ?
-									<Switch>
-										<Route exact path="/home" component={Campus} />
-										<Route path="/home/rate" component={Rate} />
-										<Route path="/home/adver" component={Adver} />
-										<Route path="/home/swiper" component={Swiper} />
-										<Route path="/home/campus" component={Campus} />
-										<Route path="/home/shop" component={Shop} />
-										<Route path="/home/goods" component={Goods} />
-										<Route path="/home/member" component={Member} />
-										<Route path="/home/today" component={Today} />
-										<Route path="/home/order" component={Order} />
-										<Route path="/home/money" component={Money} />
-										<Route path="/home/evaluate" component={Evaluate} />
-										<Route path="/home/data" component={Data} />
-										<Route path="/home/options" component={Options} />
-									</Switch>
-									:
-									<Switch>
-										<Route exact path="/home/shop/data" component={ShopData} />
-										<Route exact path="/home/shop/my" component={MyShop} />
-										<Route exact path="/home/shop/goods" component={ShopGoods} />
-										<Route exact path="/home/shop/order" component={ShopOrder} />
-										<Route exact path="/home/shop/bill" component={ShopBill} />
-									</Switch>
-							}
-
+						<div className="content">
+							{role == 1 ? (
+								<Switch>
+									<Route exact path="/home" component={Campus} />
+									<Route path="/home/shop" component={Shop} />
+									<Route path="/home/swiper" component={Swiper} />
+									<Route path="/home/cabinet" component={Cabinet} />
+									<Route path="/home/member" component={Member} />
+									<Route path="/home/order" component={Order} />
+									<Route path="/home/rate" component={Rate} />
+									<Route path="/home/adver" component={Adver} />
+									<Route path="/home/campus" component={Campus} />
+									<Route path="/home/today" component={Today} />
+									<Route path="/home/money" component={Money} />
+									<Route path="/home/evaluate" component={Evaluate} />
+									<Route path="/home/data" component={Data} />
+									<Route path="/home/options" component={Options} />
+								</Switch>
+							) : (
+								<Switch>
+									<Route exact path="/home/shop/data" component={ShopData} />
+									<Route exact path="/home/shop/my" component={MyShop} />
+									<Route exact path="/home/shop/goods" component={ShopGoods} />
+									<Route exact path="/home/shop/order" component={ShopOrder} />
+									<Route exact path="/home/shop/bill" component={ShopBill} />
+								</Switch>
+							)}
 						</div>
 					</Content>
 				</Layout>
 				<Footer className="root_layout_footer">
-					<img src={logo}/>
+					<img src={logo} />
 					<span>moving洗衣店</span>
 				</Footer>
 			</React.Fragment>
