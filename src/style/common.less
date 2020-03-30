@@ -37,6 +37,36 @@ body, html, #root{
 	.ant-modal-header{
 		text-align: center;
 	}
+	.campus_container{
+		min-height: 30px;
+		.campus_container_label{
+			text-align: right;
+			color: #333;
+		}
+		.campus_container_label_require::before{
+			display: inline-block;
+			margin-right: 4px;
+			color: #f5222d;
+			font-size: 12px;
+			font-family: SimSun,sans-serif;
+			line-height: 1;
+			content: '*';
+		}
+		.campus_container_btn{
+			text-align: center;
+			button{
+				width: 100px!important;
+			}
+		}
+		#campus_tree{
+			padding-left: 100px;
+
+		}
+		.campus_tree_icon{
+			color: 	#1890ff;
+			font-size: 14px;
+		}
+	}
 }
 .common_max_dialog{
 	width: 600px!important;

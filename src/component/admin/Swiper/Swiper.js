@@ -14,16 +14,17 @@ const { Option } = Select;
 class Swiper extends React.Component {
 	constructor(props) {
 		super(props);
-		this.onSearchSwiper = this.onSearchSwiper.bind(this);
 		this.onSearchShop = this.onSearchShop.bind(this);
+		this.onSearchSwiper = this.onSearchSwiper.bind(this);
 	}
 
 	state = {
-		swiperList: [],
+		shopid: '',
 		shopList: [],
+		editData: {},
+		swiperList: [],
 		addDialogVisible: false,
 		editorDialogVisible: false,
-		editData: {},
 	};
 
 	async componentDidMount() {
@@ -34,30 +35,36 @@ class Swiper extends React.Component {
 	// 点击搜索轮播图
 	async onSearchSwiper() {
 		let values = this.props.form.getFieldsValue();
+		if (!values.shopid) return;
 		let swipers = await Request.get('/swiper/getByShopId', values);
 		let swiperList = swipers.data || [];
-		this.setState({ swiperList: swiperList });
+		await this.setState({ swiperList: swiperList });
 	}
 
-	// 查询商店轮
+	// 查询商店
 	async onSearchShop() {
 		let resShop = await Request.get('/shop/all');
 		let shops = resShop.data || [];
-		await this.setState({ shopList: shops });
-		this.props.form.setFieldsValue({ shopid: shops[0].id });
+		let shopid = shops[0] ? shops[0].id : '';
+		await this.setState({ shopList: shops, shopid });
+		await this.props.form.setFieldsValue({ shopid: shops[0].id });
+	}
+
+	// 商店选择切换的时候
+	onShopSelect(shopid) {
+		this.setState({ shopid }, () => {
+			this.onSearchSwiper();
+		});
 	}
 
 	// 新增编辑框的显示
 	controllerAddDialog() {
-		this.setState({
-			addDialogVisible: !this.state.addDialogVisible,
-		});
+		this.setState({ addDialogVisible: !this.state.addDialogVisible });
 	}
+
 	// 编辑框的显示
 	controllerEditorDialog() {
-		this.setState({
-			editorDialogVisible: !this.state.editorDialogVisible,
-		});
+		this.setState({ editorDialogVisible: !this.state.editorDialogVisible });
 	}
 
 	// 确认删除
@@ -71,9 +78,7 @@ class Swiper extends React.Component {
 
 	// 点击修改
 	onEditorCampus(record) {
-		this.setState({ editData: record }, () => {
-			this.controllerEditorDialog();
-		});
+		this.setState({ editData: record }, () => this.controllerEditorDialog());
 	}
 
 	render() {
@@ -82,7 +87,7 @@ class Swiper extends React.Component {
 				labelCol: { span: 4 },
 				wrapperCol: { span: 20 },
 			},
-			{ addDialogVisible, editorDialogVisible, editData, swiperList, shopList } = this.state,
+			{ addDialogVisible, editorDialogVisible, swiperList, shopList, shopid, editData } = this.state,
 			columns = [
 				{
 					title: '店铺',
@@ -100,7 +105,7 @@ class Swiper extends React.Component {
 					},
 				},
 				{
-					title: '创建日期',
+					title: '创建时间',
 					dataIndex: 'create_time',
 					key: 'create_time',
 					align: 'center',
@@ -144,9 +149,9 @@ class Swiper extends React.Component {
 				<div className="common_search">
 					<Form className="common_search_form" {...formItemLayout}>
 						<Col span={6}>
-							<FormItem label="关联设置">
+							<FormItem label="店铺选择">
 								{getFieldDecorator('shopid')(
-									<Select placeholder="请选择">
+									<Select onSelect={this.onShopSelect.bind(this)} placeholder="请选择">
 										{shopList &&
 											shopList.map((item) => {
 												return (
@@ -160,9 +165,6 @@ class Swiper extends React.Component {
 							</FormItem>
 						</Col>
 						<Col span={6} offset={1}>
-							<Button type="primary" onClick={this.onSearchSwiper.bind(this)}>
-								查询
-							</Button>
 							<Button type="primary" onClick={this.controllerAddDialog.bind(this)}>
 								新增
 							</Button>
@@ -182,15 +184,17 @@ class Swiper extends React.Component {
 				</div>
 				{addDialogVisible ? (
 					<AddDialog
+						shopid={shopid}
 						controllerAddDialog={this.controllerAddDialog.bind(this)}
 						onSearch={this.onSearchSwiper.bind(this)}
 					/>
 				) : null}
 				{editorDialogVisible ? (
 					<EditorDialog
+						shopid={shopid}
+						editData={editData}
 						onSearch={this.onSearchSwiper.bind(this)}
 						controllerEditorDialog={this.controllerEditorDialog.bind(this)}
-						editData={editData}
 					/>
 				) : null}
 			</div>
