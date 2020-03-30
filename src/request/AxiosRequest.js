@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import _ from 'lodash';
-import {message} from 'antd';
-import config from '../../config/config';
+import { message } from 'antd';
+import config from '../config/config';
 
 Axios.defaults = _.assign(Axios.defaults, {
 	// `transformRequest` 允许在向服务器发送前，修改请求数据
@@ -13,10 +13,12 @@ Axios.defaults = _.assign(Axios.defaults, {
 	// }],
 	baseURL: config.baseUrl,
 	// `transformResponse` 在传递给 then/catch 前，允许修改响应数据
-	transformResponse: [function (data) {
-		// 对 data 进行任意转换处理
-		return data;
-	}],
+	transformResponse: [
+		function (data) {
+			// 对 data 进行任意转换处理
+			return data;
+		},
+	],
 	// `headers` 是即将被发送的自定义请求头
 	// headers: {'X-Requested-With': 'XMLHttpRequest'},
 	// `timeout` 指定请求超时的毫秒数(0 表示无超时时间)
@@ -38,39 +40,41 @@ Axios.defaults = _.assign(Axios.defaults, {
 // });
 
 // 添加响应拦截器
-Axios.interceptors.response.use(function (res) {
-	if(res.status != 200) return Promise.reject('系统错误');
-	let data = JSON.parse(res.data);
-	let hash = location.hash;
-	// 用户没有登录或者登录超时
-	if(data.code == 401 && hash != '/login') {
-		message.warning('请重新登录');
-		location.hash = '/login';
-		return Promise.reject('请重新登录');
-	}
-	// 高德地图的请求
-	if(data.status == 1) {
+Axios.interceptors.response.use(
+	function (res) {
+		if (res.status != 200) return Promise.reject('系统错误');
+		let data = JSON.parse(res.data);
+		let hash = location.hash;
+		// 用户没有登录或者登录超时
+		if (data.code == 401 && hash != '/login') {
+			message.warning('请重新登录');
+			location.hash = '/login';
+			return Promise.reject('请重新登录');
+		}
+		// 高德地图的请求
+		if (data.status == 1) {
+			return Promise.resolve(data);
+		}
+		if (data.code != 200) {
+			message.warning(data.message || '系统错误, 请稍后重试');
+			return Promise.reject(data.message || '系统错误, 请稍后重试');
+		}
 		return Promise.resolve(data);
-	}
-	if(data.code != 200) {
-		message.warning(data.message || '系统错误, 请稍后重试');
-		return Promise.reject(data.message || '系统错误, 请稍后重试');
-	}
-	return Promise.resolve(data);
-}, function (error) {
-	// 对响应错误做点什么
-	if (error.response) {
-		// 请求已发出，但服务器响应的状态码不在 2xx 范围内
-		console.log(error.response.data);
-		console.log(error.response.status);
-		console.log(error.response.headers);
-	} else {
-		console.info('Error', error.message);
-	}
-	console.info(error.config);
-	return Promise.reject(error);
-});
-
+	},
+	function (error) {
+		// 对响应错误做点什么
+		if (error.response) {
+			// 请求已发出，但服务器响应的状态码不在 2xx 范围内
+			console.log(error.response.data);
+			console.log(error.response.status);
+			console.log(error.response.headers);
+		} else {
+			console.info('Error', error.message);
+		}
+		console.info(error.config);
+		return Promise.reject(error);
+	},
+);
 
 export default {
 	get: (url = '', params = {}) => {
@@ -78,15 +82,17 @@ export default {
 			Axios({
 				method: 'get',
 				url: url,
-				params: params
-			}).then((res) => {
-				if(res.status == 1) return resolve(res); // 高德地图
-				if(res.code == 200) resolve(res);
-				else reject(res);
-			}).catch((err) => {
-				console.info(`服务端出错11: ${err}`);
-				reject(err);
-			});
+				params: params,
+			})
+				.then((res) => {
+					if (res.status == 1) return resolve(res); // 高德地图
+					if (res.code == 200) resolve(res);
+					else reject(res);
+				})
+				.catch((err) => {
+					console.info(`服务端出错11: ${err}`);
+					reject(err);
+				});
 		});
 	},
 	post: (url = '', params = {}) => {
@@ -94,14 +100,16 @@ export default {
 			Axios({
 				method: 'post',
 				url: url,
-				data: params
-			}).then((res) => {
-				if(res.code == 200) resolve(res);
-				else reject(res);
-			}).catch((err) => {
-				console.info(`服务端出错: ${err}`);
-				reject(err);
-			});
+				data: params,
+			})
+				.then((res) => {
+					if (res.code == 200) resolve(res);
+					else reject(res);
+				})
+				.catch((err) => {
+					console.info(`服务端出错: ${err}`);
+					reject(err);
+				});
 		});
 	},
 	put: (url = '', params = {}) => {
@@ -109,14 +117,16 @@ export default {
 			Axios({
 				method: 'put',
 				url: url,
-				data: params
-			}).then((res) => {
-				if(res.code == 200) resolve(res);
-				else reject(res);
-			}).catch((err) => {
-				console.info(`服务端出错: ${err}`);
-				reject(err);
-			});
+				data: params,
+			})
+				.then((res) => {
+					if (res.code == 200) resolve(res);
+					else reject(res);
+				})
+				.catch((err) => {
+					console.info(`服务端出错: ${err}`);
+					reject(err);
+				});
 		});
 	},
 	delete: (url = '', params = {}) => {
@@ -124,14 +134,16 @@ export default {
 			Axios({
 				method: 'delete',
 				url: url,
-				data: params
-			}).then((res) => {
-				if(res.code == 200) resolve(res);
-				else reject(res);
-			}).catch((err) => {
-				console.info(`服务端出错: ${err}`);
-				reject(err);
-			});
+				data: params,
+			})
+				.then((res) => {
+					if (res.code == 200) resolve(res);
+					else reject(res);
+				})
+				.catch((err) => {
+					console.info(`服务端出错: ${err}`);
+					reject(err);
+				});
 		});
 	},
 };

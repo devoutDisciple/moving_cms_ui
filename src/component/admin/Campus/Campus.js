@@ -1,8 +1,6 @@
 import React from 'react';
-import {inject, observer} from 'mobx-react';
-import {
-	Form, Input, Col, Button, Table, Popconfirm, message
-} from 'antd';
+import { inject, observer } from 'mobx-react';
+import { Form, Input, Col, Button, Table, Popconfirm, message } from 'antd';
 const FormItem = Form.Item;
 import AddDialog from './AddDialog';
 import EditorDialog from './EditorDialog';
@@ -11,8 +9,7 @@ import MapDialog from './MapDialog';
 
 @inject('CampusStore')
 @observer
-class Campus extends React.Component{
-
+class Campus extends React.Component {
 	constructor(props) {
 		super(props);
 		this.campusStore = props.CampusStore;
@@ -25,7 +22,7 @@ class Campus extends React.Component{
 		editData: {},
 		mapDialogVisible: false,
 		mapData: {}, // 地图数据
-	}
+	};
 
 	componentDidMount() {
 		this.onSearch();
@@ -34,20 +31,20 @@ class Campus extends React.Component{
 	// 新增编辑框的显示
 	controllerAddDialog() {
 		this.setState({
-			addDialogVisible: !this.state.addDialogVisible
+			addDialogVisible: !this.state.addDialogVisible,
 		});
 	}
 	// 编辑框的显示
 	controllerEditorDialog() {
 		this.setState({
-			editorDialogVisible: !this.state.editorDialogVisible
+			editorDialogVisible: !this.state.editorDialogVisible,
 		});
 	}
 
 	// 确认删除
 	async onConfirmDelete(record) {
-		let result = await Request.post('/position/delete', {id: record.id, name: record.name});
-		if(result.data == 'success') {
+		let result = await Request.post('/position/delete', { id: record.id, name: record.name });
+		if (result.data == 'success') {
 			message.success('删除成功');
 			return this.onSearch();
 		}
@@ -55,11 +52,14 @@ class Campus extends React.Component{
 
 	// 点击修改
 	onEditorCampus(record) {
-		this.setState({
-			editData: record
-		}, () => {
-			this.controllerEditorDialog();
-		});
+		this.setState(
+			{
+				editData: record,
+			},
+			() => {
+				this.controllerEditorDialog();
+			},
+		);
 	}
 
 	// 点击搜索
@@ -70,40 +70,41 @@ class Campus extends React.Component{
 
 	// 点击标记的时候
 	onSignClick(record) {
-		this.setState({mapData: record}, () => this.onControllerMapDialog());
+		this.setState({ mapData: record }, () => this.onControllerMapDialog());
 	}
 
 	// 控制地图显示的开关
 	onControllerMapDialog() {
-		this.setState({mapDialogVisible: !this.state.mapDialogVisible}, () => this.onSearch());
+		this.setState({ mapDialogVisible: !this.state.mapDialogVisible }, () => this.onSearch());
 	}
 
 	render() {
 		const formItemLayout = {
 				labelCol: { span: 8 },
 				wrapperCol: { span: 16 },
-			}, campusList = this.campusStore.campus,
-			{addDialogVisible, editorDialogVisible, editData, mapDialogVisible, mapData} = this.state,
+			},
+			campusList = this.campusStore.campus,
+			{ addDialogVisible, editorDialogVisible, editData, mapDialogVisible, mapData } = this.state,
 			{ getFieldDecorator } = this.props.form,
 			columns = [
 				{
 					title: '区域',
 					dataIndex: 'name',
 					key: 'name',
-					align: 'center'
+					align: 'center',
 				},
 				{
 					title: '权重',
 					dataIndex: 'sort',
 					key: 'sort',
-					align: 'center'
+					align: 'center',
 				},
 				{
 					title: '操作',
 					dataIndex: 'operation',
 					key: 'operation',
 					align: 'center',
-					render:(text, record) => {
+					render: (text, record) => {
 					/*eslint-disable*/
 					return <span className="common_table_span">
 						<Popconfirm placement="top" title="是否确认删除" onConfirm={this.onConfirmDelete.bind(this, record)} okText="确认" cancelText="取消">

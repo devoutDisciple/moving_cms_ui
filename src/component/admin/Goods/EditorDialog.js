@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	Form, Input, Modal, Radio, Row, Col, message, Upload, Icon
-} from 'antd';
+import { Form, Input, Modal, Radio, Row, Col, message, Upload, Icon } from 'antd';
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
 import config from '../../../../config/config';
@@ -10,7 +8,6 @@ const FormItem = Form.Item;
 let id = 2;
 
 class EditorDialog extends React.Component {
-
 	constructor(props) {
 		super(props);
 		this.shopStore = props.ShopStore;
@@ -19,8 +16,7 @@ class EditorDialog extends React.Component {
 	state = {
 		previewVisible: false,
 		previewImage: '',
-		fileList: [
-		],
+		fileList: [],
 	};
 
 	async componentDidMount() {
@@ -37,11 +33,14 @@ class EditorDialog extends React.Component {
 			typeObj[`names[${index}]`] = item.name;
 			typeObj[`prices[${index}]`] = item.price;
 		});
-		form.setFieldsValue({
-			keys: typeList,
-		}, () => {
-			this.props.form.setFieldsValue(typeObj);
-		});
+		form.setFieldsValue(
+			{
+				keys: typeList,
+			},
+			() => {
+				this.props.form.setFieldsValue(typeObj);
+			},
+		);
 		this.props.form.setFieldsValue({
 			name: data.name,
 			title: data.title,
@@ -49,9 +48,10 @@ class EditorDialog extends React.Component {
 			package_cost: data.package_cost,
 			today: String(data.today) || '1',
 			sort: data.sort,
-			sales: Number(data.sales)
+			sales: Number(data.sales),
 		});
-		let list = data.desc || [], fileList = [];
+		let list = data.desc || [],
+			fileList = [];
 		list = JSON.parse(list);
 		list.map((item, index) => {
 			fileList.push({
@@ -62,7 +62,7 @@ class EditorDialog extends React.Component {
 			});
 		});
 		this.setState({
-			fileList: fileList
+			fileList: fileList,
 		});
 	}
 
@@ -71,13 +71,13 @@ class EditorDialog extends React.Component {
 		let file = document.getElementById('goods_main_img').files[0];
 		var reader = new FileReader();
 		reader.readAsDataURL(file);
-		reader.onprogress = function(e) {
+		reader.onprogress = function (e) {
 			if (e.lengthComputable) {
 				// 简单把进度信息打印到控制台吧
 				console.log(e.loaded / e.total + '%');
 			}
 		};
-		reader.onload = function(e) {
+		reader.onload = function (e) {
 			var image = new Image();
 			image.src = e.target.result;
 			let dom = document.querySelector('.goods_main_preview');
@@ -85,10 +85,10 @@ class EditorDialog extends React.Component {
 			dom.appendChild(image);
 			self.cropper = new Cropper(image, {
 				aspectRatio: 4 / 4,
-				zoomable: false
+				zoomable: false,
 			});
 		};
-		reader.onerror = function() {
+		reader.onerror = function () {
 			message.warning('服务端错误, 请稍后重试');
 		};
 	}
@@ -96,38 +96,39 @@ class EditorDialog extends React.Component {
 	descChange() {
 		let files = document.getElementById('goods_desc_img').files;
 		let dom = document.querySelector('.goods_desc_preview');
-		for(let i = 0; i < files.length; i++) {
+		for (let i = 0; i < files.length; i++) {
 			var reader = new FileReader();
 			reader.readAsDataURL(files[i]);
-			reader.onload = function(e) {
+			reader.onload = function (e) {
 				var image = new Image();
 				image.src = e.target.result;
 				dom.appendChild(image);
 			};
-			reader.onerror = function() {
+			reader.onerror = function () {
 				message.warning('服务端错误, 请稍后重试');
 			};
 		}
 	}
 
-
-	async handleOk()  {
+	async handleOk() {
 		this.props.form.validateFields(async (err, values) => {
 			try {
 				if (err) return;
-				let {keys, names, prices} = values;
+				let { keys, names, prices } = values;
 				let specification = [];
-				keys.map(key => {
+				keys.map((key) => {
 					specification.push({
 						name: names[key],
-						price: prices[key]
+						price: prices[key],
 					});
 				});
-				let formData = new FormData(), {fileList} = this.state, desc = [];
-				fileList.map(item => {
+				let formData = new FormData(),
+					{ fileList } = this.state,
+					desc = [];
+				fileList.map((item) => {
 					desc.push(item.response ? item.response.data : item.url);
 				});
-				desc =  JSON.stringify(desc);
+				desc = JSON.stringify(desc);
 				formData.append('desc', desc);
 				formData.append('id', this.props.data.id);
 				formData.append('name', values.name);
@@ -139,10 +140,10 @@ class EditorDialog extends React.Component {
 				formData.append('sales', values.sales);
 				formData.append('shopid', this.props.data.shopid);
 				formData.append('specification', JSON.stringify(specification));
-				if(!this.cropper) {
+				if (!this.cropper) {
 					formData.append('type', 1);
 					let res = await request.post('/goods/update', formData);
-					if(res.data == 'success') {
+					if (res.data == 'success') {
 						message.success('修改成功');
 						this.props.onSearch();
 						this.props.controllerEditorDialog();
@@ -153,7 +154,7 @@ class EditorDialog extends React.Component {
 					formData.append('file', blob);
 					formData.append('type', 2);
 					let res = await request.post('/goods/update', formData);
-					if(res.data == 'success') {
+					if (res.data == 'success') {
 						message.success('修改成功');
 						this.props.onSearch();
 						this.props.controllerEditorDialog();
@@ -175,24 +176,24 @@ class EditorDialog extends React.Component {
 
 	getBase64(file) {
 		return new Promise((resolve, reject) => {
-		  const reader = new FileReader();
-		  reader.readAsDataURL(file);
-		  reader.onload = () => resolve(reader.result);
-		  reader.onerror = error => reject(error);
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = () => resolve(reader.result);
+			reader.onerror = (error) => reject(error);
 		});
 	}
 
-	async handlePreview (file) {
-  		if (!file.url && !file.preview) {
-  			file.preview = await this.getBase64(file.originFileObj);
-	  	}
-	  	this.setState({
+	async handlePreview(file) {
+		if (!file.url && !file.preview) {
+			file.preview = await this.getBase64(file.originFileObj);
+		}
+		this.setState({
 			previewImage: file.url || file.preview,
 			previewVisible: true,
 		});
 	}
 
-	handleChange ({ fileList }) {
+	handleChange({ fileList }) {
 		this.setState({ fileList });
 	}
 
@@ -214,7 +215,7 @@ class EditorDialog extends React.Component {
 		const keys = form.getFieldValue('keys');
 		// can use data-binding to set
 		form.setFieldsValue({
-		  keys: keys.filter(key => key !== k),
+			keys: keys.filter((key) => key !== k),
 		});
 	}
 
@@ -237,10 +238,7 @@ class EditorDialog extends React.Component {
 			return (
 				<Row key={index} className="goods_dialog_type_formitem">
 					<Col span={10}>
-						<Form.Item
-							className="goods_dialog_type_formitem_input"
-							label=''
-							required={true}>
+						<Form.Item className="goods_dialog_type_formitem_input" label="" required={true}>
 							{getFieldDecorator(`names[${k}]`, {
 								validateTrigger: ['onChange', 'onBlur'],
 								rules: [
@@ -250,16 +248,11 @@ class EditorDialog extends React.Component {
 										message: '请输入',
 									},
 								],
-							})(
-								<Input placeholder="请输入" />
-							)}
+							})(<Input placeholder="请输入" />)}
 						</Form.Item>
 					</Col>
 					<Col span={10}>
-						<Form.Item
-							label=''
-							className="goods_dialog_type_formitem_input"
-							required={true}>
+						<Form.Item label="" className="goods_dialog_type_formitem_input" required={true}>
 							{getFieldDecorator(`prices[${k}]`, {
 								validateTrigger: ['onChange', 'onBlur'],
 								rules: [
@@ -269,9 +262,7 @@ class EditorDialog extends React.Component {
 										message: '请输入',
 									},
 								],
-							})(
-								<Input type="number" placeholder="请输入" />
-							)}
+							})(<Input type="number" placeholder="请输入" />)}
 						</Form.Item>
 					</Col>
 					<Col span={4} className="goods_dialog_type_title goods_dialog_type_plus">
@@ -287,105 +278,101 @@ class EditorDialog extends React.Component {
 		return (
 			<div>
 				<Modal
-					className='common_dialog common_max_dialog'
+					className="common_dialog common_max_dialog"
 					title="新增商品"
 					visible={true}
 					onOk={this.handleOk.bind(this)}
-					onCancel={this.handleDialogCancel.bind(this)}>
+					onCancel={this.handleDialogCancel.bind(this)}
+				>
 					<Form {...formItemLayout} onSubmit={this.handleSubmit}>
-						<FormItem
-							label="商品名称">
+						<FormItem label="商品名称">
 							{getFieldDecorator('name', {
-								rules: [{
-									required: true,
-									message: '请输入',
-								}],
-							})(
-								<Input placeholder="请输入" />
-							)}
+								rules: [
+									{
+										required: true,
+										message: '请输入',
+									},
+								],
+							})(<Input placeholder="请输入" />)}
 						</FormItem>
-						<FormItem
-							label="销量">
+						<FormItem label="销量">
 							{getFieldDecorator('sales', {
-								rules: [{
-									required: true,
-									message: '请输入',
-								}],
-							})(
-								<Input placeholder="请输入" type="number"/>
-							)}
+								rules: [
+									{
+										required: true,
+										message: '请输入',
+									},
+								],
+							})(<Input placeholder="请输入" type="number" />)}
 						</FormItem>
-						<FormItem
-							label="价格">
+						<FormItem label="价格">
 							{getFieldDecorator('price', {
-								rules: [{
-									required: true,
-									message: '请输入',
-								}],
-							})(
-								<Input type="number" placeholder="请输入" />
-							)}
+								rules: [
+									{
+										required: true,
+										message: '请输入',
+									},
+								],
+							})(<Input type="number" placeholder="请输入" />)}
 						</FormItem>
-						<FormItem
-							label="餐盒费">
+						<FormItem label="餐盒费">
 							{getFieldDecorator('package_cost', {
-								rules: [{
-									required: true,
-									message: '请输入',
-								}],
-							})(
-								<Input type="number" placeholder="请输入" />
-							)}
+								rules: [
+									{
+										required: true,
+										message: '请输入',
+									},
+								],
+							})(<Input type="number" placeholder="请输入" />)}
 						</FormItem>
-						<FormItem
-							label="今日推荐">
+						<FormItem label="今日推荐">
 							{getFieldDecorator('today', {
-								rules: [{
-									required: true,
-									message: '请选择',
-								}],
+								rules: [
+									{
+										required: true,
+										message: '请选择',
+									},
+								],
 							})(
 								<Radio.Group>
 									<Radio value="1">是</Radio>
 									<Radio value="2">否</Radio>
-								</Radio.Group>
+								</Radio.Group>,
 							)}
 						</FormItem>
-						<FormItem
-							label="权重">
+						<FormItem label="权重">
 							{getFieldDecorator('sort', {
-								rules: [{
-									required: true,
-									message: '请输入',
-								}],
-							})(
-								<Input type="number" placeholder="请输入权重, 权重越高, 排名越靠前" />
-							)}
+								rules: [
+									{
+										required: true,
+										message: '请输入',
+									},
+								],
+							})(<Input type="number" placeholder="请输入权重, 权重越高, 排名越靠前" />)}
 						</FormItem>
-						<FormItem
-							label="描述">
-							{getFieldDecorator('title')(
-								<Input placeholder="请输入(8个字以内)" />
-							)}
+						<FormItem label="描述">
+							{getFieldDecorator('title')(<Input placeholder="请输入(8个字以内)" />)}
 						</FormItem>
-						<Row className='campus_container'>
-							<Col span={4} className='campus_container_label campus_container_label_require'>主图录入：</Col>
+						<Row className="campus_container">
+							<Col span={4} className="campus_container_label campus_container_label_require">
+								主图录入：
+							</Col>
 							<Col span={20}>
 								<input
 									type="file"
-									id='goods_main_img'
+									id="goods_main_img"
 									accept="image/gif,image/jpeg,image/jpg,image/png,image/svg"
-									onChange={this.fileChange.bind(this)}/>
+									onChange={this.fileChange.bind(this)}
+								/>
 							</Col>
 						</Row>
-						<Row className='campus_container goods_img_container'>
-							<Col span={4} className='campus_container_label'></Col>
-							<Col span={20} className='goods_main_preview'>
-								<img src={this.props.data.url}/>
+						<Row className="campus_container goods_img_container">
+							<Col span={4} className="campus_container_label"></Col>
+							<Col span={20} className="goods_main_preview">
+								<img src={this.props.data.url} />
 							</Col>
 						</Row>
-						<FormItem
-							label="描述图片">
+						<FormItem label="描述图片">
 							{getFieldDecorator('descFile')(
 								<Upload
 									action={`${config.baseUrl}/goods/uploadDescImg`}
@@ -393,19 +380,22 @@ class EditorDialog extends React.Component {
 									withCredentials
 									fileList={fileList}
 									onPreview={this.handlePreview.bind(this)}
-									onChange={this.handleChange.bind(this)}>
+									onChange={this.handleChange.bind(this)}
+								>
 									{fileList.length >= 10 ? null : uploadButton}
-								</Upload>
+								</Upload>,
 							)}
 						</FormItem>
-						<FormItem
-							className="goods_dialog_type_name"
-							label="规格录入">
+						<FormItem className="goods_dialog_type_name" label="规格录入">
 							<Row>
-								<Col span={10} className="goods_dialog_type_title">规格</Col>
-								<Col span={10} className="goods_dialog_type_title">价格</Col>
+								<Col span={10} className="goods_dialog_type_title">
+									规格
+								</Col>
+								<Col span={10} className="goods_dialog_type_title">
+									价格
+								</Col>
 								<Col span={4} className="goods_dialog_type_title goods_dialog_type_plus">
-									<Icon type="plus-circle" onClick={this.addType.bind(this)}/>
+									<Icon type="plus-circle" onClick={this.addType.bind(this)} />
 								</Col>
 							</Row>
 						</FormItem>
