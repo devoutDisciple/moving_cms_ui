@@ -1,27 +1,26 @@
 import React from 'react';
 import { Menu, Icon } from 'antd';
-import {inject, observer} from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
 @inject('GlobalStore')
 @observer
 export default class MyMenu extends React.Component {
-
 	constructor(props) {
 		super(props);
 		this.globalStore = props.GlobalStore;
 	}
 
 	state = {
-		selectedKeys: '/home/shop'
-	}
+		selectedKeys: '/home/shop',
+	};
 
 	componentDidMount() {
 		let hash = location.hash;
 		let selectedKeys = '';
-		if(hash.startsWith('#')) {
+		if (hash.startsWith('#')) {
 			selectedKeys = hash.split('#')[1];
 			this.setState({
-				selectedKeys: selectedKeys
+				selectedKeys: selectedKeys,
 			});
 		}
 	}
@@ -30,20 +29,21 @@ export default class MyMenu extends React.Component {
 		let key = data.key;
 		location.hash = '#' + key;
 		this.setState({
-			selectedKeys: key
+			selectedKeys: key,
 		});
 	}
 
 	render() {
 		let role = this.globalStore.userinfo.role;
 		// 超级管理员
-		if(role == 1) {
+		if (role == 1) {
 			return (
 				<Menu
 					mode="inline"
 					theme="dark"
 					onSelect={this.onSelect.bind(this)}
-					selectedKeys={[this.state.selectedKeys]}>
+					selectedKeys={[this.state.selectedKeys]}
+				>
 					<Menu.Item key="/home/data">
 						<Icon type="inbox" />
 						<span>数据汇总</span>
@@ -51,6 +51,10 @@ export default class MyMenu extends React.Component {
 					<Menu.Item key="/home/shop">
 						<Icon type="pie-chart" />
 						<span>店铺管理</span>
+					</Menu.Item>
+					<Menu.Item key="/home/swiper">
+						<Icon type="pie-chart" />
+						<span>首页轮播图</span>
 					</Menu.Item>
 					<Menu.Item key="/home/rate">
 						<Icon type="inbox" />
@@ -67,10 +71,6 @@ export default class MyMenu extends React.Component {
 					<Menu.Item key="/home/member">
 						<Icon type="inbox" />
 						<span>会员管理</span>
-					</Menu.Item>
-					<Menu.Item key="/home/swiper">
-						<Icon type="pie-chart" />
-						<span>首页轮播图</span>
 					</Menu.Item>
 
 					<Menu.Item key="/home/goods">
@@ -108,7 +108,8 @@ export default class MyMenu extends React.Component {
 				theme="dark"
 				onSelect={this.onSelect.bind(this)}
 				selectedKeys={[this.state.selectedKeys]}
-				inlineCollapsed={false}>
+				inlineCollapsed={false}
+			>
 				<Menu.Item key="/home/shop/order">
 					<Icon type="inbox" />
 					<span>订单管理</span>

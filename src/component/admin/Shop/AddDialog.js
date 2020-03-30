@@ -60,7 +60,7 @@ class AddDialog extends React.Component {
 										message: '请输入',
 									},
 								],
-							})(<Input placeholder="请输入" />)}
+							})(<Input placeholder="请输入" maxLength={20} />)}
 						</FormItem>
 						<FormItem label="店铺经理">
 							{getFieldDecorator('manager', {
@@ -70,7 +70,7 @@ class AddDialog extends React.Component {
 										message: '请输入',
 									},
 								],
-							})(<Input placeholder="请输入(商家登录该系统的用户名)" />)}
+							})(<Input placeholder="请输入" maxLength={10} />)}
 						</FormItem>
 						<FormItem label="联系电话">
 							{getFieldDecorator('phone', {
@@ -80,7 +80,7 @@ class AddDialog extends React.Component {
 										message: '请输入',
 									},
 								],
-							})(<Input type="number" placeholder="请输入" />)}
+							})(<Input type="number" placeholder="请输入" maxLength={12} />)}
 						</FormItem>
 						<FormItem label="登录账号">
 							{getFieldDecorator('username', {
@@ -90,7 +90,7 @@ class AddDialog extends React.Component {
 										message: '请输入',
 									},
 								],
-							})(<Input placeholder="请输入(商家登录该系统的账号)" />)}
+							})(<Input placeholder="请输入(商家登录该系统的账号)" maxLength={20} />)}
 						</FormItem>
 						<FormItem label="密码">
 							{getFieldDecorator('password', {
@@ -100,7 +100,7 @@ class AddDialog extends React.Component {
 										message: '请输入',
 									},
 								],
-							})(<Input placeholder="请输入(商家登录该系统的密码)" />)}
+							})(<Input placeholder="请输入(商家登录该系统的密码)" maxLength={20} />)}
 						</FormItem>
 						<FormItem label="权重">
 							{getFieldDecorator('sort', {
@@ -110,10 +110,10 @@ class AddDialog extends React.Component {
 										message: '请输入',
 									},
 								],
-							})(<Input placeholder="请输入数字(最小为1)" />)}
+							})(<Input type="number" placeholder="请输入数字(最小为1)" />)}
 						</FormItem>
 						<FormItem label="描述">
-							{getFieldDecorator('desc')(<Input placeholder="请输入描述信息" />)}
+							{getFieldDecorator('desc')(<Input maxLength={30} placeholder="请输入描述信息" />)}
 						</FormItem>
 					</Form>
 				</Modal>

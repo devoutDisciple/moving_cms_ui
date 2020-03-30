@@ -19,9 +19,8 @@ class Shop extends React.Component {
 
 	state = {
 		addressDialogVisible: false, // 位置信息弹框
-		addDialogVisible: true,
+		addDialogVisible: false,
 		editorDialogVisible: false,
-		editData: {},
 		dataDialogVisible: false,
 		shopid: '',
 		accountData: {},
@@ -46,8 +45,11 @@ class Shop extends React.Component {
 	}
 
 	// 编辑框的显示
-	controllerEditorDialog() {
-		this.setState({ editorDialogVisible: !this.state.editorDialogVisible });
+	controllerEditorDialog(record) {
+		this.setState({
+			shopid: record.id,
+			editorDialogVisible: !this.state.editorDialogVisible,
+		});
 	}
 
 	// 确认删除
@@ -57,13 +59,6 @@ class Shop extends React.Component {
 			message.success('删除成功');
 			return this.onSearch();
 		}
-	}
-
-	// 点击修改
-	onEditorCampus(record) {
-		this.setState({ editData: record }, () => {
-			this.controllerEditorDialog();
-		});
 	}
 
 	// 确认关店或者开店
@@ -149,6 +144,12 @@ class Shop extends React.Component {
 				align: 'center',
 			},
 			{
+				title: '描述',
+				dataIndex: 'desc',
+				key: 'desc',
+				align: 'center',
+			},
+			{
 				title: '操作',
 				dataIndex: 'operation',
 				key: 'operation',
@@ -156,7 +157,7 @@ class Shop extends React.Component {
 				render: (text, record) => {
 					return (
 						<span className="common_table_span">
-							<a href="javascript:;" onClick={this.onEditorCampus.bind(this, record)}>
+							<a href="javascript:;" onClick={this.controllerEditorDialog.bind(this, record)}>
 								修改
 							</a>
 							<a href="javascript:;" onClick={this.controllerMapDialogVisible.bind(this, record)}>
@@ -187,7 +188,6 @@ class Shop extends React.Component {
 				addressDialogVisible,
 				addDialogVisible,
 				editorDialogVisible,
-				editData,
 				shopid,
 				dataDialogVisible,
 				accountVisible,
@@ -242,9 +242,9 @@ class Shop extends React.Component {
 				)}
 				{editorDialogVisible && (
 					<EditorDialog
-						editData={editData}
+						shopid={shopid}
 						onSearch={this.onSearch.bind(this)}
-						controllerEditorDialog={this.controllerEditorDialog.bind(this)}
+						controllerEditorDialog={() => this.setState({ editorDialogVisible: false })}
 					/>
 				)}
 				{dataDialogVisible && (

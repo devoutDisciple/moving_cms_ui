@@ -75,9 +75,12 @@ class MapDialog extends React.Component {
 	showInfoClick(longitude, latitude) {
 		this.setState({ longitude, latitude });
 		axios
-			.get(`https://restapi.amap.com/v3/geocode/regeo?key=04b2e5e608f74b461c892db7ed3d64b6&location=${longitude},${latitude}`, {
-				withCredentials: false,
-			})
+			.get(
+				`https://restapi.amap.com/v3/geocode/regeo?key=04b2e5e608f74b461c892db7ed3d64b6&location=${longitude},${latitude}`,
+				{
+					withCredentials: false,
+				},
+			)
 			.then((res) => {
 				let site = res.regeocode.formatted_address || '';
 				this.props.form.setFieldsValue({ site: site });
@@ -123,7 +126,7 @@ class MapDialog extends React.Component {
 		};
 		return (
 			<Modal
-				className="common_dialog common_max_dialog"
+				className="common_dialog common_big_dialog"
 				title="选取位置"
 				visible={true}
 				onOk={this.handleOk.bind(this)}
