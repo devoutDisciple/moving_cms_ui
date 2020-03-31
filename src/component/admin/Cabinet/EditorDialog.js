@@ -17,8 +17,10 @@ class EditorDialog extends React.Component {
 		let { editData } = this.props;
 		console.log(editData, 99);
 		this.props.form.setFieldsValue({
-			sort: editData.sort,
 			shopName: editData.shopName,
+			name: editData.name,
+			address: editData.address,
+			sort: editData.sort,
 		});
 	}
 
@@ -30,9 +32,11 @@ class EditorDialog extends React.Component {
 				if (!(values.sort > 0)) return message.warning('权重请输入数字');
 				const formData = new FormData();
 				formData.append('id', editData.id);
+				formData.append('name', values.name);
+				formData.append('address', values.address);
 				formData.append('sort', Number(values.sort) || 1);
 				if (!this.cropper) {
-					let res = await request.post('/swiper/update', formData);
+					let res = await request.post('/cabinet/update', formData);
 					if (res.data == 'success') {
 						this.props.controllerEditorDialog();
 						this.props.onSearch();
@@ -41,7 +45,7 @@ class EditorDialog extends React.Component {
 				}
 				this.cropper.getCroppedCanvas().toBlob(async (blob) => {
 					formData.append('file', blob);
-					let res = await request.post('/swiper/update', formData);
+					let res = await request.post('/cabinet/update', formData);
 					if (res.data == 'success') {
 						this.props.controllerEditorDialog();
 						this.props.onSearch();
@@ -105,7 +109,7 @@ class EditorDialog extends React.Component {
 			<div>
 				<Modal
 					className="common_dialog"
-					title="编辑轮播图"
+					title="编辑快递柜"
 					visible={true}
 					onOk={this.handleOk.bind(this)}
 					onCancel={this.handleCancel.bind(this)}
@@ -120,6 +124,26 @@ class EditorDialog extends React.Component {
 									},
 								],
 							})(<Input disabled placeholder="商店名称" />)}
+						</FormItem>
+						<FormItem label="柜子标题">
+							{getFieldDecorator('name', {
+								rules: [
+									{
+										required: true,
+										message: '请输入',
+									},
+								],
+							})(<Input placeholder="请输入" maxLength={20} />)}
+						</FormItem>
+						<FormItem label="柜子位置">
+							{getFieldDecorator('address', {
+								rules: [
+									{
+										required: true,
+										message: '请输入',
+									},
+								],
+							})(<Input placeholder="请输入" maxLength={20} />)}
 						</FormItem>
 						<FormItem label="权重">
 							{getFieldDecorator('sort', {

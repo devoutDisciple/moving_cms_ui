@@ -28,10 +28,12 @@ class AddDialog extends React.Component {
 				this.cropper.getCroppedCanvas().toBlob(async (blob) => {
 					const formData = new FormData();
 					formData.append('shopid', shopid);
-					formData.append('file', blob);
-					formData.append('create_time', moment().format('YYYY-MM-DD HH:mm:ss'));
+					formData.append('name', values.name);
+					formData.append('address', values.address);
 					formData.append('sort', Number(values.sort) || 1);
-					let res = await request.post('/swiper/add', formData);
+					formData.append('create_time', moment().format('YYYY-MM-DD HH:mm:ss'));
+					formData.append('file', blob);
+					let res = await request.post('/cabinet/add', formData);
 					if (res.data == 'success') {
 						this.props.controllerAddDialog();
 						this.props.onSearch();
@@ -66,7 +68,7 @@ class AddDialog extends React.Component {
 			dom.innerHTML = '';
 			dom.appendChild(image);
 			self.cropper = new Cropper(image, {
-				aspectRatio: 16 / 8,
+				aspectRatio: 8 / 8,
 				zoomable: false,
 			});
 		};
@@ -85,12 +87,32 @@ class AddDialog extends React.Component {
 			<div>
 				<Modal
 					className="common_dialog"
-					title="新增轮播图"
+					title="新增快递柜"
 					visible={true}
 					onOk={this.handleOk.bind(this)}
 					onCancel={this.handleCancel.bind(this)}
 				>
 					<Form {...formItemLayout} onSubmit={this.handleSubmit}>
+						<FormItem label="柜子标题">
+							{getFieldDecorator('name', {
+								rules: [
+									{
+										required: true,
+										message: '请输入',
+									},
+								],
+							})(<Input placeholder="请输入" maxLength={20} />)}
+						</FormItem>
+						<FormItem label="柜子位置">
+							{getFieldDecorator('address', {
+								rules: [
+									{
+										required: true,
+										message: '请输入',
+									},
+								],
+							})(<Input placeholder="请输入" maxLength={20} />)}
+						</FormItem>
 						<Row className="campus_container">
 							<Col span={4} className="campus_container_label campus_container_label_require">
 								图片录入：
@@ -108,7 +130,7 @@ class AddDialog extends React.Component {
 							<Col span={4} className="campus_container_label"></Col>
 							<Col span={20} className="swiper_dialog_preview"></Col>
 						</Row>
-						<FormItem label="图片权重">
+						<FormItem label="权重">
 							{getFieldDecorator('sort', {
 								rules: [
 									{

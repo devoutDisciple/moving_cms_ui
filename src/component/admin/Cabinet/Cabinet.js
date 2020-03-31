@@ -15,7 +15,7 @@ class Swiper extends React.Component {
 	constructor(props) {
 		super(props);
 		this.onSearchShop = this.onSearchShop.bind(this);
-		this.onSearchSwiper = this.onSearchSwiper.bind(this);
+		this.onSearchCabinet = this.onSearchCabinet.bind(this);
 	}
 
 	state = {
@@ -29,14 +29,14 @@ class Swiper extends React.Component {
 
 	async componentDidMount() {
 		await this.onSearchShop();
-		await this.onSearchSwiper();
+		await this.onSearchCabinet();
 	}
 
-	// 点击搜索轮播图
-	async onSearchSwiper() {
+	// 查询快递柜
+	async onSearchCabinet() {
 		let values = this.props.form.getFieldsValue();
 		if (!values.shopid) return;
-		let swipers = await Request.get('/swiper/getByShopId', values);
+		let swipers = await Request.get('/cabinet/getByShopId', values);
 		let swiperList = swipers.data || [];
 		await this.setState({ swiperList: swiperList });
 	}
@@ -52,9 +52,7 @@ class Swiper extends React.Component {
 
 	// 商店选择切换的时候
 	onShopSelect(shopid) {
-		this.setState({ shopid }, () => {
-			this.onSearchSwiper();
-		});
+		this.setState({ shopid }, () => this.onSearchCabinet());
 	}
 
 	// 新增编辑框的显示
@@ -69,10 +67,10 @@ class Swiper extends React.Component {
 
 	// 确认删除
 	async onConfirmDelete(record) {
-		let result = await Request.post('/swiper/delete', { id: record.id });
+		let result = await Request.post('/cabinet/delete', { id: record.id });
 		if (result.data == 'success') {
 			message.success('删除成功');
-			return this.onSearchSwiper();
+			return this.onSearchCabinet();
 		}
 	}
 
@@ -96,13 +94,25 @@ class Swiper extends React.Component {
 					align: 'center',
 				},
 				{
-					title: '图片',
+					title: '首页展示图片',
 					dataIndex: 'url',
 					key: 'url',
 					align: 'center',
 					render: (text, record) => {
 						return <img className="common_table_img" src={`${config.baseUrl}/${record.url}`} />;
 					},
+				},
+				{
+					title: '标题',
+					dataIndex: 'name',
+					key: 'name',
+					align: 'center',
+				},
+				{
+					title: '地址',
+					dataIndex: 'address',
+					key: 'address',
+					align: 'center',
 				},
 				{
 					title: '创建时间',
@@ -186,14 +196,14 @@ class Swiper extends React.Component {
 					<AddDialog
 						shopid={shopid}
 						controllerAddDialog={this.controllerAddDialog.bind(this)}
-						onSearch={this.onSearchSwiper.bind(this)}
+						onSearch={this.onSearchCabinet.bind(this)}
 					/>
 				) : null}
 				{editorDialogVisible ? (
 					<EditorDialog
 						shopid={shopid}
 						editData={editData}
-						onSearch={this.onSearchSwiper.bind(this)}
+						onSearch={this.onSearchCabinet.bind(this)}
 						controllerEditorDialog={this.controllerEditorDialog.bind(this)}
 					/>
 				) : null}
