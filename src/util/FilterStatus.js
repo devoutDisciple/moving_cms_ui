@@ -17,4 +17,37 @@ export default {
 		}
 		return data;
 	},
+	// 区域等级
+	filterAreaStatus: function (status) {
+		let data = '';
+		switch (Number(status)) {
+			case 1:
+				data = '省';
+				break;
+			case 2:
+				data = '市';
+				break;
+			case 3:
+				data = '区';
+				break;
+			default:
+				data = '省';
+		}
+		return data;
+	},
+	// 是否正常运行
+	filterActiveStatus: function (status) {
+		let data = '';
+		switch (Number(status)) {
+			case 1:
+				data = '是';
+				break;
+			case 2:
+				data = '否';
+				break;
+			default:
+				data = '是';
+		}
+		return data;
+	},
 };

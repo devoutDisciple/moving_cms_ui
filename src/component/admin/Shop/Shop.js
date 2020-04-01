@@ -1,5 +1,4 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
 import { Button, Table, Popconfirm, message, Tooltip, Form, Col, Input } from 'antd';
 import AddDialog from './AddDialog';
 import MapDialog from './MapDialog';
@@ -9,8 +8,6 @@ import DataDialog from './DataDialog';
 import Request from '../../../request/AxiosRequest';
 const FormItem = Form.Item;
 
-@inject('ShopStore')
-@observer
 class Shop extends React.Component {
 	constructor(props) {
 		super(props);
@@ -18,13 +15,14 @@ class Shop extends React.Component {
 	}
 
 	state = {
-		addressDialogVisible: false, // 位置信息弹框
-		addDialogVisible: false,
-		editorDialogVisible: false,
-		dataDialogVisible: false,
 		shopid: '',
+		shopList: [], // 商店列表
 		accountData: {},
 		accountVisible: false,
+		addDialogVisible: false,
+		dataDialogVisible: false,
+		editorDialogVisible: false,
+		addressDialogVisible: false, // 位置信息弹框
 	};
 
 	componentDidMount() {
@@ -32,9 +30,14 @@ class Shop extends React.Component {
 	}
 
 	// 点击搜索
-	onSearch() {
+	async onSearch() {
 		let value = this.props.form.getFieldsValue();
-		this.shopStore.getAll(value);
+		let shops = await Request.get('/shop/all', value);
+		let shopList = shops.data || [];
+		shopList.map((item) => {
+			item.key = item.id;
+		});
+		this.setState({ shopList });
 	}
 
 	// 新增编辑框的显示
@@ -183,7 +186,7 @@ class Shop extends React.Component {
 				},
 			},
 		];
-		let { list } = this.shopStore,
+		let { shopList } = this.state,
 			{
 				addressDialogVisible,
 				addDialogVisible,
@@ -219,10 +222,10 @@ class Shop extends React.Component {
 				<div className="common_content">
 					<Table
 						bordered
-						dataSource={list}
+						dataSource={shopList}
 						columns={columns}
 						pagination={{
-							total: list.length || 0,
+							total: shopList.length || 0,
 							showTotal: (total) => `共 ${total} 条`,
 						}}
 					/>

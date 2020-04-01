@@ -10,7 +10,7 @@ import logo from '../../asserts/logo.png';
 
 // 管理员
 import Swiper from '../admin/Swiper/Swiper';
-import Campus from '../admin/Campus/Campus';
+import Area from '../admin/Area/Area';
 import Shop from '../admin/Shop/Shop';
 import Cabinet from '../admin/Cabinet/Cabinet';
 import Member from '../admin/Member/Member';
@@ -54,7 +54,7 @@ export default class MyLayout extends React.Component {
 						<div className="content">
 							{role == 1 ? (
 								<Switch>
-									<Route exact path="/home" component={Campus} />
+									<Route exact path="/home" component={Shop} />
 									<Route path="/home/shop" component={Shop} />
 									<Route path="/home/swiper" component={Swiper} />
 									<Route path="/home/cabinet" component={Cabinet} />
@@ -62,7 +62,7 @@ export default class MyLayout extends React.Component {
 									<Route path="/home/order" component={Order} />
 									<Route path="/home/rate" component={Rate} />
 									<Route path="/home/adver" component={Adver} />
-									<Route path="/home/campus" component={Campus} />
+									<Route path="/home/area" component={Area} />
 									<Route path="/home/today" component={Today} />
 									<Route path="/home/money" component={Money} />
 									<Route path="/home/evaluate" component={Evaluate} />
