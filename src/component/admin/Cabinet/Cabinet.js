@@ -19,7 +19,6 @@ class Swiper extends React.Component {
 	}
 
 	state = {
-		shopid: '',
 		shopList: [],
 		editData: {},
 		swiperList: [],
@@ -28,6 +27,7 @@ class Swiper extends React.Component {
 	};
 
 	async componentDidMount() {
+		await this.props.form.setFieldsValue({ shopid: -1 });
 		await this.onSearchShop();
 		await this.onSearchCabinet();
 	}
@@ -35,7 +35,6 @@ class Swiper extends React.Component {
 	// 查询快递柜
 	async onSearchCabinet() {
 		let values = this.props.form.getFieldsValue();
-		if (!values.shopid) return;
 		let swipers = await Request.get('/cabinet/getByShopId', values);
 		let swiperList = swipers.data || [];
 		await this.setState({ swiperList: swiperList });
@@ -45,9 +44,7 @@ class Swiper extends React.Component {
 	async onSearchShop() {
 		let resShop = await Request.get('/shop/all');
 		let shops = resShop.data || [];
-		let shopid = shops[0] ? shops[0].id : '';
-		await this.setState({ shopList: shops, shopid });
-		await this.props.form.setFieldsValue({ shopid: shops[0].id });
+		await this.setState({ shopList: shops });
 	}
 
 	// 商店选择切换的时候
@@ -85,7 +82,7 @@ class Swiper extends React.Component {
 				labelCol: { span: 4 },
 				wrapperCol: { span: 20 },
 			},
-			{ addDialogVisible, editorDialogVisible, swiperList, shopList, shopid, editData } = this.state,
+			{ addDialogVisible, editorDialogVisible, swiperList, shopList, editData } = this.state,
 			columns = [
 				{
 					title: '店铺',
@@ -162,6 +159,9 @@ class Swiper extends React.Component {
 							<FormItem label="店铺选择">
 								{getFieldDecorator('shopid')(
 									<Select onSelect={this.onShopSelect.bind(this)} placeholder="请选择">
+										<Option key={-1} value={-1}>
+											全部
+										</Option>
 										{shopList &&
 											shopList.map((item) => {
 												return (
@@ -194,14 +194,12 @@ class Swiper extends React.Component {
 				</div>
 				{addDialogVisible ? (
 					<AddDialog
-						shopid={shopid}
 						controllerAddDialog={this.controllerAddDialog.bind(this)}
 						onSearch={this.onSearchCabinet.bind(this)}
 					/>
 				) : null}
 				{editorDialogVisible ? (
 					<EditorDialog
-						shopid={shopid}
 						editData={editData}
 						onSearch={this.onSearchCabinet.bind(this)}
 						controllerEditorDialog={this.controllerEditorDialog.bind(this)}

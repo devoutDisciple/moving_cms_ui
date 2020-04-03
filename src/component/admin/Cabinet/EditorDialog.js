@@ -15,7 +15,6 @@ class EditorDialog extends React.Component {
 
 	async componentDidMount() {
 		let { editData } = this.props;
-		console.log(editData, 99);
 		this.props.form.setFieldsValue({
 			shopName: editData.shopName,
 			name: editData.name,

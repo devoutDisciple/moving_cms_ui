@@ -1,33 +1,40 @@
 import React from 'react';
-import { Form, Input, Modal, Row, Col, message } from 'antd';
-import { inject, observer } from 'mobx-react';
+import { Form, Input, Modal, Row, Col, message, Select } from 'antd';
 import Cropper from 'cropperjs';
 import moment from 'moment';
 import 'cropperjs/dist/cropper.css';
 import request from '../../../request/AxiosRequest';
 const FormItem = Form.Item;
+const Option = Select.Option;
 
-@inject('SwiperStore')
-@observer
 class AddDialog extends React.Component {
 	constructor(props) {
 		super(props);
-		this.swiperStore = props.SwiperStore;
 	}
 
-	state = {};
+	state = {
+		shopList: [],
+	};
 
-	async componentDidMount() {}
+	async componentDidMount() {
+		await this.onSearchShop();
+	}
+
+	// 查询商店
+	async onSearchShop() {
+		let resShop = await request.get('/shop/all');
+		let shops = resShop.data || [];
+		await this.setState({ shopList: shops });
+	}
 
 	async handleOk() {
-		let { shopid } = this.props;
 		this.props.form.validateFields(async (err, values) => {
 			try {
 				if (err) return;
 				if (!this.cropper) return message.warning('请上传图片');
 				this.cropper.getCroppedCanvas().toBlob(async (blob) => {
 					const formData = new FormData();
-					formData.append('shopid', shopid);
+					formData.append('shopid', values.shopid);
 					formData.append('name', values.name);
 					formData.append('address', values.address);
 					formData.append('sort', Number(values.sort) || 1);
@@ -78,11 +85,12 @@ class AddDialog extends React.Component {
 	}
 
 	render() {
-		const { getFieldDecorator } = this.props.form;
-		const formItemLayout = {
-			labelCol: { span: 4 },
-			wrapperCol: { span: 20 },
-		};
+		const { getFieldDecorator } = this.props.form,
+			formItemLayout = {
+				labelCol: { span: 4 },
+				wrapperCol: { span: 20 },
+			},
+			{ shopList } = this.state;
 		return (
 			<div>
 				<Modal
@@ -93,6 +101,26 @@ class AddDialog extends React.Component {
 					onCancel={this.handleCancel.bind(this)}
 				>
 					<Form {...formItemLayout} onSubmit={this.handleSubmit}>
+						<FormItem label="店铺">
+							{getFieldDecorator('shopid', {
+								rules: [
+									{
+										required: true,
+										message: '请输入',
+									},
+								],
+							})(
+								<Select onSelect={(value) => this.setState({ level: value })} placeholder="请选择">
+									{shopList.map((item) => {
+										return (
+											<Option key={item.id} value={item.id}>
+												{item.name}
+											</Option>
+										);
+									})}
+								</Select>,
+							)}
+						</FormItem>
 						<FormItem label="柜子标题">
 							{getFieldDecorator('name', {
 								rules: [
