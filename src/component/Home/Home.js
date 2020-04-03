@@ -22,6 +22,7 @@ import Data from '../admin/Data/Data';
 import Adver from '../admin/Adver/Adver';
 import Rate from '../admin/Rate/Rate';
 import Options from '../admin/Options/Options';
+import Intergral from '../admin/Intergral/Intergral';
 
 // 厨房
 import MyShop from '../shop/MyShop/MyShop';
@@ -60,6 +61,7 @@ export default class MyLayout extends React.Component {
 									<Route path="/home/cabinet" component={Cabinet} />
 									<Route path="/home/member" component={Member} />
 									<Route path="/home/order" component={Order} />
+									<Route path="/home/intergral" component={Intergral} />
 									<Route path="/home/rate" component={Rate} />
 									<Route path="/home/adver" component={Adver} />
 									<Route path="/home/area" component={Area} />

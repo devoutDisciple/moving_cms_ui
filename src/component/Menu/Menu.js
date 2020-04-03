@@ -72,6 +72,10 @@ export default class MyMenu extends React.Component {
 						<Icon type="inbox" />
 						<span>区域管理</span>
 					</Menu.Item>
+					<Menu.Item key="/home/intergral">
+						<Icon type="inbox" />
+						<span>积分兑换管理</span>
+					</Menu.Item>
 					{/* <Menu.Item key="/home/rate">
 						<Icon type="inbox" />
 						<span>费率管理</span>
