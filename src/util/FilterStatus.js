@@ -50,4 +50,19 @@ export default {
 		}
 		return data;
 	},
+	// 意见反馈的状态
+	filterOptionsStatus: function (status) {
+		let data = '';
+		switch (Number(status)) {
+			case 1:
+				data = '待处理';
+				break;
+			case 2:
+				data = '已处理';
+				break;
+			default:
+				data = '待处理';
+		}
+		return data;
+	},
 };

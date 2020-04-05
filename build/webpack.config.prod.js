@@ -15,24 +15,24 @@ console.log(chalk.yellow(`logging: the project is openning analyzer, the startAn
 
 let plugins = [
 	new CleanWebpackPlugin(path.resolve(__dirname, '../dist'), {
-		root : path.resolve(__dirname, '../'),
-		exclude : 'a.js',
-		verbose : true,
-		dry : false
+		root: path.resolve(__dirname, '../'),
+		exclude: 'a.js',
+		verbose: true,
+		dry: false,
 	}),
 	new UglifyJSPlugin({
 		sourceMap: false,
 		cache: false,
 		uglifyOptions: {
 			compress: {
-				drop_console: true
+				drop_console: true,
 			},
 			output: {
-				comments: false,        //去掉注释
+				comments: false, //去掉注释
 			},
 			parse: {
-				html5_comments: false
-			}
+				html5_comments: false,
+			},
 		},
 	}),
 	/*eslint-disable*/
