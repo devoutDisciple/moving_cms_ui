@@ -130,7 +130,7 @@ class AddDialog extends React.Component {
 										message: '请输入',
 									},
 								],
-							})(<Input maxLength={10} placeholder="请输入" />)}
+							})(<Input maxLength={16} placeholder="请输入" />)}
 						</FormItem>
 						<FormItem label="所需积分">
 							{getFieldDecorator('intergral', {

@@ -158,7 +158,7 @@ class OptionsScreen extends React.Component {
 											待处理
 										</Option>
 										<Option key={3} value={2}>
-											已经处理
+											已处理
 										</Option>
 									</Select>,
 								)}

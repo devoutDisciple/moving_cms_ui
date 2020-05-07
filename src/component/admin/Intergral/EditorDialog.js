@@ -49,8 +49,8 @@ class EditorDialog extends React.Component {
 				formData.append('intergral', values.intergral);
 				formData.append('desc', values.desc);
 				formData.append('sort', Number(values.sort) || 1);
-
 				if (!this.cropper) {
+					formData.append('update', 'no');
 					let res = await Request.post('/intergral/update', formData);
 					if (res.data == 'success') {
 						this.props.controllerEditorDialog();
@@ -95,7 +95,7 @@ class EditorDialog extends React.Component {
 			dom.innerHTML = '';
 			dom.appendChild(image);
 			self.cropper = new Cropper(image, {
-				aspectRatio: 16 / 8,
+				aspectRatio: 8 / 8,
 				zoomable: false,
 			});
 		};
