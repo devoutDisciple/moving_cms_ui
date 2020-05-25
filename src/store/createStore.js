@@ -12,6 +12,6 @@ export const createStore = () => {
 		CampusStore,
 		SwiperStore,
 		ShopStore,
-		GoodsStore
+		GoodsStore,
 	};
 };

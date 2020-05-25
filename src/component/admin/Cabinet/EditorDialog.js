@@ -79,7 +79,7 @@ class EditorDialog extends React.Component {
 			dom.innerHTML = '';
 			dom.appendChild(image);
 			self.cropper = new Cropper(image, {
-				aspectRatio: 16 / 8,
+				aspectRatio: 8 / 8,
 				zoomable: false,
 			});
 		};

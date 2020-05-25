@@ -37,16 +37,13 @@ class AddDialog extends React.Component {
 
 	async handleOk() {
 		this.props.form.validateFields(async (err, values) => {
-			console.log(values, 111);
 			try {
 				if (err) return;
 				let { level } = this.state;
-				console.log(level, 222);
 				if (level === 1) values.parentid = 0;
 				if (level === 2) values.parentid = values.province;
 				if (level === 3) values.parentid = values.city;
 				values.create_time = moment().format('YYYY-MM-DD HH:mm:ss');
-				console.log(values, 333);
 				let res = await Request.post('/area/add', values);
 				if (res.data == 'success') {
 					message.success('新增成功');

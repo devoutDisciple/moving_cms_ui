@@ -119,13 +119,6 @@ class Member extends React.Component {
 					dataIndex: 'nickname',
 					key: 'nickname',
 					align: 'center',
-					render: (text, record) => {
-						return (
-							<Tooltip placement="top" title={record.name}>
-								<span className="common_table_ellipse">{record.name}</span>
-							</Tooltip>
-						);
-					},
 				},
 				{
 					title: '真实姓名',

@@ -152,21 +152,6 @@ class EditorDialog extends React.Component {
 								],
 							})(<Input placeholder="请输入" maxLength={20} />)}
 						</FormItem>
-						{/* <FormItem label="是否运行">
-							{getFieldDecorator('active', {
-								rules: [
-									{
-										required: true,
-										message: '请选择',
-									},
-								],
-							})(
-								<Select placeholder="请选择">
-									<Option value={1}>是</Option>
-									<Option value={2}>否</Option>
-								</Select>,
-							)}
-						</FormItem> */}
 						<FormItem label="权重">
 							{getFieldDecorator('sort', {
 								rules: [
