@@ -48,7 +48,7 @@ export default class MyLayout extends React.Component {
 			<React.Fragment>
 				<Layout>
 					<Sider className="root_layout_sider">
-						<div className="root_layout_sider_header">Moving Dry Cleaner</div>
+						<div className="root_layout_sider_header">MOVING洗衣</div>
 						<Menu />
 					</Sider>
 					<Content className="root_layout_content">
@@ -87,7 +87,7 @@ export default class MyLayout extends React.Component {
 				</Layout>
 				<Footer className="root_layout_footer">
 					<img src={logo} />
-					<span>moving洗衣店</span>
+					<span>MOVING洗衣</span>
 				</Footer>
 			</React.Fragment>
 		);

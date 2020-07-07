@@ -20,6 +20,7 @@ class EditorDialog extends React.Component {
 			name: editData.name,
 			address: editData.address,
 			sort: editData.sort,
+			boxid: editData.boxid,
 		});
 	}
 
@@ -32,6 +33,7 @@ class EditorDialog extends React.Component {
 				const formData = new FormData();
 				formData.append('id', editData.id);
 				formData.append('name', values.name);
+				formData.append('boxid', values.boxid);
 				formData.append('address', values.address);
 				formData.append('sort', Number(values.sort) || 1);
 				if (!this.cropper) {
@@ -143,6 +145,16 @@ class EditorDialog extends React.Component {
 									},
 								],
 							})(<Input placeholder="请输入" maxLength={20} />)}
+						</FormItem>
+						<FormItem label="boxid">
+							{getFieldDecorator('boxid', {
+								rules: [
+									{
+										required: true,
+										message: '请输入',
+									},
+								],
+							})(<Input placeholder="请输入" maxLength={30} />)}
 						</FormItem>
 						<FormItem label="权重">
 							{getFieldDecorator('sort', {

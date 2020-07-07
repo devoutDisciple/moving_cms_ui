@@ -13,9 +13,9 @@ let baseConfig = webpackBaseConfig('development');
 //获取npm后面的命令
 const commandTarget = process.env.npm_lifecycle_event; // npm run start:build 获取的是start:build
 let API_SERVER = config.dev.DEFALUT_SERVER;
-if(_.includes(_.toLower(commandTarget), 'local')) API_SERVER = config.dev.LOCAL_SERVER;
-if(_.includes(_.toLower(commandTarget), 'test')) API_SERVER = config.dev.TEST_SERVER;
-if(_.includes(_.toLower(commandTarget), 'online')) API_SERVER = config.dev.ONLINE_SERVER;
+if (_.includes(_.toLower(commandTarget), 'local')) API_SERVER = config.dev.LOCAL_SERVER;
+if (_.includes(_.toLower(commandTarget), 'test')) API_SERVER = config.dev.TEST_SERVER;
+if (_.includes(_.toLower(commandTarget), 'online')) API_SERVER = config.dev.ONLINE_SERVER;
 
 console.log(chalk.yellow(`logging: API_SERVER is ${API_SERVER}`));
 

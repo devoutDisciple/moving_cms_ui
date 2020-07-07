@@ -36,6 +36,7 @@ class AddDialog extends React.Component {
 					const formData = new FormData();
 					formData.append('shopid', values.shopid);
 					formData.append('name', values.name);
+					formData.append('boxid', values.boxid);
 					formData.append('address', values.address);
 					formData.append('sort', Number(values.sort) || 1);
 					formData.append('create_time', moment().format('YYYY-MM-DD HH:mm:ss'));
@@ -140,6 +141,16 @@ class AddDialog extends React.Component {
 									},
 								],
 							})(<Input placeholder="请输入" maxLength={20} />)}
+						</FormItem>
+						<FormItem label="boxid">
+							{getFieldDecorator('boxid', {
+								rules: [
+									{
+										required: true,
+										message: '请输入',
+									},
+								],
+							})(<Input placeholder="请输入" maxLength={30} />)}
 						</FormItem>
 						<Row className="campus_container">
 							<Col span={4} className="campus_container_label campus_container_label_require">

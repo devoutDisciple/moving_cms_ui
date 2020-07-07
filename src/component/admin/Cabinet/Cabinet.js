@@ -106,6 +106,12 @@ class Swiper extends React.Component {
 					align: 'center',
 				},
 				{
+					title: '柜子id',
+					dataIndex: 'boxid',
+					key: 'boxid',
+					align: 'center',
+				},
+				{
 					title: '地址',
 					dataIndex: 'address',
 					key: 'address',
