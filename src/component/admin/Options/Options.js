@@ -117,7 +117,6 @@ class OptionsScreen extends React.Component {
 					key: 'status',
 					align: 'center',
 					render: (status) => {
-						console.log(status, 99);
 						let text = FilterStatus.filterOptionsStatus(status);
 						if (status == 2) return <Badge status="success" text={text} />;
 						return <Badge status="error" text={text} />;

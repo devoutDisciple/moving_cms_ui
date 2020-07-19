@@ -1,31 +1,55 @@
 export default {
+	// 筛选订单状态
 	filterOrderStatus: function (status) {
 		let data = '';
-		// 1-未支付 2-商家未接单 3-商家接单 4-派送中 5-订单完成 6-已取消 7-已评价
+		// 1-存储在柜子 2-店员取货，清洗中 3-待付款 4-待取货 5-已完成 6-预约上门，未付款 7-积分兑换  8-预约上门取衣，已付款
 		switch (Number(status)) {
 			case 1:
-				data = '未派送';
+				data = '待取货';
 				break;
 			case 2:
-				data = '派送中';
+				data = '清洗中';
 				break;
 			case 3:
-				data = '订单完成';
+				data = '用户待付款';
 				break;
 			case 4:
-				data = '已取消';
+				data = '用户待取货';
 				break;
 			case 5:
-				data = '已评价';
+				data = '已完成';
 				break;
 			case 6:
-				data = '退款中';
+				data = '预约上门，未付款';
 				break;
 			case 7:
-				data = '退款完成';
+				data = '积分兑换';
 				break;
 			case 8:
-				data = '退款失败';
+				data = '预约上门取衣，已付款';
+				break;
+			case 9:
+				data = '店员录入订单';
+				break;
+		}
+		return data;
+	},
+	// 筛选订单类型
+	filterOrderType: function (status) {
+		let data = '';
+		// 下单类型：1-通过柜子下单 2-上门取衣 3-积分兑换 4-店员录入订单
+		switch (Number(status)) {
+			case 1:
+				data = '快递柜订单';
+				break;
+			case 2:
+				data = '上门取衣订单';
+				break;
+			case 3:
+				data = '积分兑换订单';
+				break;
+			case 4:
+				data = '店员录入订单';
 				break;
 		}
 		return data;
