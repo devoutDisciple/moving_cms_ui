@@ -7,10 +7,10 @@ export default {
 				data = '普通用户';
 				break;
 			case 2:
-				data = '黄金会员';
+				data = 'MOVING会员';
 				break;
 			case 3:
-				data = '钻石会员';
+				data = 'MOVING PLUS会员';
 				break;
 			default:
 				data = '普通用户';
@@ -62,6 +62,42 @@ export default {
 				break;
 			default:
 				data = '待处理';
+		}
+		return data;
+	},
+	// 支付类型
+	filterPayType: function (status) {
+		let data = '';
+		switch (status) {
+			case 'order':
+				data = '订单支付';
+				break;
+			case 'clothing':
+				data = '上门取衣';
+				break;
+			case 'recharge':
+				data = '余额充值';
+				break;
+			case 'member':
+				data = '购买会员';
+				break;
+			default:
+				data = '--';
+		}
+		return data;
+	},
+	// 支付方式
+	filterPayMothod: function (status) {
+		let data = '';
+		switch (status) {
+			case 'alipay':
+				data = '支付宝';
+				break;
+			case 'wechat':
+				data = '微信';
+				break;
+			default:
+				data = '--';
 		}
 		return data;
 	},

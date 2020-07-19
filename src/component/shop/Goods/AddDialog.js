@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Modal, Row, Col, message, Upload, Icon } from 'antd';
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
-import config from '../../../../config/config';
+import config from '../../../config/config';
 import request from '../../../request/AxiosRequest';
 
 const FormItem = Form.Item;

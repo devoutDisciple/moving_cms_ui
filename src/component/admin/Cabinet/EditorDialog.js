@@ -37,6 +37,7 @@ class EditorDialog extends React.Component {
 				formData.append('address', values.address);
 				formData.append('sort', Number(values.sort) || 1);
 				if (!this.cropper) {
+					formData.append('nopicture', true);
 					let res = await request.post('/cabinet/update', formData);
 					if (res.data == 'success') {
 						this.props.controllerEditorDialog();

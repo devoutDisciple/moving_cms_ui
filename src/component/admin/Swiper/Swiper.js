@@ -99,7 +99,7 @@ class Swiper extends React.Component {
 					key: 'url',
 					align: 'center',
 					render: (text, record) => {
-						return <img className="common_table_img" src={`${config.baseUrl}/${record.url}`} />;
+						return <img className="common_table_img" src={`${config.imgUrl}/${record.url}`} />;
 					},
 				},
 				{
@@ -175,8 +175,9 @@ class Swiper extends React.Component {
 				<div className="common_content">
 					<Table
 						bordered
-						dataSource={swiperList}
+						rowKey="id"
 						columns={columns}
+						dataSource={swiperList}
 						pagination={{
 							total: swiperList.length,
 							showTotal: (total) => `共 ${total} 条`,

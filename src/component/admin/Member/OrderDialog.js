@@ -1,13 +1,9 @@
 import React from 'react';
-import {
-	Modal, Table
-} from 'antd';
+import { Modal, Table } from 'antd';
 import moment from 'moment';
 import FilterStatus from '../../../util/FilterOrderStatus';
 
-
 export default class OrderDialog extends React.Component {
-
 	constructor(props) {
 		super(props);
 		this.shopStore = props.ShopStore;
@@ -23,9 +19,8 @@ export default class OrderDialog extends React.Component {
 			item.key = index;
 			item.order_time = moment(item.order_time).format('YYYY-MM-DD HH:mm:ss');
 		});
-		this.setState({data});
+		this.setState({ data });
 	}
-
 
 	handleCancel() {
 		this.props.onControllerOrderDialog();
@@ -33,16 +28,21 @@ export default class OrderDialog extends React.Component {
 
 	expandedRowRender(record) {
 		let order_list = JSON.parse(record.order_list || []);
-		order_list.map((item,index) => {
+		order_list.map((item, index) => {
 			item.key = index;
 		});
 		const columns = [
 			{ title: '商品名称', dataIndex: 'name', key: 'name' },
 			{ title: '数量', dataIndex: 'num', key: 'num' },
 			{ title: '单价', dataIndex: 'price', key: 'price' },
-			{ title: '总价', dataIndex: 'total', key: 'total', render: (text, record) => {
-				return <span>{Number(record.num) * Number(record.price)}</span>;
-			}},
+			{
+				title: '总价',
+				dataIndex: 'total',
+				key: 'total',
+				render: (text, record) => {
+					return <span>{Number(record.num) * Number(record.price)}</span>;
+				},
+			},
 		];
 		return <Table columns={columns} dataSource={order_list} pagination={false} />;
 	}
@@ -53,13 +53,13 @@ export default class OrderDialog extends React.Component {
 				title: '订单编号',
 				dataIndex: 'id',
 				key: 'id',
-				align: 'center'
+				align: 'center',
 			},
 			{
 				title: '折扣价',
 				dataIndex: 'discount_price',
 				key: 'discount_price',
-				align: 'center'
+				align: 'center',
 			},
 			{
 				title: '订单总价',
@@ -72,9 +72,9 @@ export default class OrderDialog extends React.Component {
 				dataIndex: 'order_time',
 				key: 'order_time',
 				align: 'center',
-				render:(text, record) => {
+				render: (text, record) => {
 					return <span>{record.order_time}</span>;
-				}
+				},
 			},
 			{
 				title: '订单状态',
@@ -83,29 +83,29 @@ export default class OrderDialog extends React.Component {
 				align: 'center',
 				render: (text, record) => {
 					return <span>{FilterStatus.filterOrderStatus(record.status)}</span>;
-				}
+				},
 			},
 		];
-		let {data} = this.state;
+		let { data } = this.state;
 		return (
 			<div>
 				<Modal
-					className='common_dialog common_max_dialog'
+					className="common_dialog common_max_dialog"
 					title="消费记录"
 					visible={true}
 					footer={null}
-					onCancel={this.handleCancel.bind(this)}>
+					onCancel={this.handleCancel.bind(this)}
+				>
 					<Table
 						bordered
 						expandedRowRender={this.expandedRowRender.bind(this)}
 						dataSource={data}
 						columns={columns}
-						pagination={
-							{
-								total: data.length,
-								showTotal: (total) => `共 ${total} 条`
-							}
-						}/>
+						pagination={{
+							total: data.length,
+							showTotal: (total) => `共 ${total} 条`,
+						}}
+					/>
 				</Modal>
 			</div>
 		);

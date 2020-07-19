@@ -31,6 +31,7 @@ class EditorDialog extends React.Component {
 				formData.append('id', editData.id);
 				formData.append('sort', Number(values.sort) || 1);
 				if (!this.cropper) {
+					formData.append('nopicture', true);
 					let res = await request.post('/swiper/update', formData);
 					if (res.data == 'success') {
 						this.props.controllerEditorDialog();

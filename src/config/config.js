@@ -5,5 +5,7 @@ export default {
 		latitude: 30.282795, // 纬度
 		name: '浙江省杭州市余杭区五常街道西溪水岸花苑',
 	},
-	baseUrl: 'http://localhost:3002',
+	// baseUrl: 'http://47.107.43.166:3003', // 线上环境
+	baseUrl: 'http://localhost:3003', // 线下环境
+	imgUrl: 'http://47.107.43.166:3003',
 };

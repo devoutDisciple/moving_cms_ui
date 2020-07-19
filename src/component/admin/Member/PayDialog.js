@@ -1,9 +1,10 @@
 import React from 'react';
-import { Modal, Table, Tooltip } from 'antd';
 import moment from 'moment';
+import { Modal, Table } from 'antd';
 import request from '../../../request/AxiosRequest';
+import FilterStatus from '../../../util/FilterStatus';
 
-export default class AddressDialog extends React.Component {
+export default class PayDialog extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -16,7 +17,8 @@ export default class AddressDialog extends React.Component {
 		let { data } = this.props;
 		let userid = data.id;
 		try {
-			let result = await request.get('/address/getAllByUserid', { userid: userid });
+			let result = await request.get('/bill/getAllByUserid', { userid: userid });
+			console.log(result, 111);
 			this.setState({ data: result.data || [] });
 		} catch (error) {
 			console.log(error);
@@ -31,53 +33,50 @@ export default class AddressDialog extends React.Component {
 	render() {
 		const columns = [
 			{
-				title: '姓名',
-				dataIndex: 'username',
-				key: 'username',
+				title: 'code',
+				dataIndex: 'code',
+				key: 'code',
 				align: 'center',
 			},
 			{
-				title: '电话',
-				dataIndex: 'phone',
-				key: 'phone',
+				title: '订单id',
+				dataIndex: 'orderid',
+				key: 'orderid',
 				align: 'center',
 			},
 			{
-				title: '性别',
-				dataIndex: 'sex',
-				key: 'sex',
+				title: '支付类型',
+				dataIndex: 'type',
+				key: 'type',
 				align: 'center',
-				render: (text, record) => {
-					if (record.default == 2) return <span>女</span>;
-					return <span>男</span>;
+				render: (text) => {
+					return <span>{FilterStatus.filterPayType(text)}</span>;
 				},
 			},
 			{
-				title: '地址',
-				dataIndex: 'area',
-				key: 'area',
+				title: '支付金额',
+				dataIndex: 'money',
+				key: 'money',
 				align: 'center',
-				render: (text, record) => {
-					let area = `${record.area} ${record.street}`;
-					return (
-						<Tooltip placement="top" title={area}>
-							<span className="common_table_ellipse">{area}</span>
-						</Tooltip>
-					);
-				},
 			},
 			{
-				title: '默认地址',
-				dataIndex: 'default',
-				key: 'default',
+				title: '赠送金额',
+				dataIndex: 'send',
+				key: 'send',
 				align: 'center',
-				render: (text, record) => {
-					if (record.default == 2) return <span>是</span>;
-					return <span>否</span>;
-				},
 			},
 			{
-				title: '创建时间',
+				title: '支付方式',
+				dataIndex: 'pay_type',
+				key: 'pay_type',
+				align: 'center',
+				render: (text) => {
+					return <span>{FilterStatus.filterPayMothod(text)}</span>;
+				},
+			},
+
+			{
+				title: '支付时间',
 				dataIndex: 'create_time',
 				key: 'create_time',
 				align: 'center',
@@ -90,8 +89,8 @@ export default class AddressDialog extends React.Component {
 		return (
 			<div>
 				<Modal
-					className="common_dialog common_big_dialog"
-					title="收货地址"
+					className="common_dialog common_big_big_dialog"
+					title="支付记录"
 					visible={true}
 					footer={null}
 					onCancel={this.handleCancel.bind(this)}

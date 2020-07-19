@@ -1,11 +1,12 @@
 import React from 'react';
-import { Table, Tooltip, message, Form, Col, Select, Button, Input } from 'antd';
+import { Table, Form, Col, Select, Button, Input } from 'antd';
 import request from '../../../request/AxiosRequest';
 import AddressDialog from './AddressDialog';
 import OrderDialog from './OrderDialog';
 import EvaluateDialog from './EvaluateDialog';
 import config from '../../../config/config';
 import FilterStatus from '../../../util/FilterStatus';
+import PayDialog from './PayDialog';
 import moment from 'moment';
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -20,7 +21,8 @@ class Member extends React.Component {
 		addressDialogVisible: false, // 地址弹框
 		orderDialogVisible: false, // 全部订单弹框
 		evaluateDialogVisible: false, // 评价信息
-		addressData: [], // 地址信息
+		payDialogVisible: false, // 消费记录信息
+		dialogData: {}, // 弹框需要的信息
 		orderList: [], // 订单信息
 		evaluateList: [], // 评价列表
 	};
@@ -47,10 +49,11 @@ class Member extends React.Component {
 		this.setState({ userList: data });
 	}
 
-	// 查看累计消费
+	// 查看所有消费记录
 	async onSearchAllMoeny(record) {
-		let res = await request.get('/order/getAllMoneyByOpenid', { openid: record.openid });
-		message.success(`该用户累计消费: ${res.data || 0}`);
+		this.setState({ dialogData: record }, () => {
+			this.onControllerPayDialog();
+		});
 	}
 
 	// 查看用户所有订单
@@ -63,7 +66,7 @@ class Member extends React.Component {
 
 	// 点击查看地址
 	onSearchAddress(data) {
-		this.setState({ addressData: data }, () => {
+		this.setState({ dialogData: data }, () => {
 			this.onControllerAddressDialog();
 		});
 	}
@@ -80,6 +83,13 @@ class Member extends React.Component {
 	onControllerEvaluateDialog() {
 		this.setState({
 			evaluateDialogVisible: !this.state.evaluateDialogVisible,
+		});
+	}
+
+	// 支付记录弹框的开关
+	onControllerPayDialog() {
+		this.setState({
+			payDialogVisible: !this.state.payDialogVisible,
 		});
 	}
 
@@ -111,7 +121,7 @@ class Member extends React.Component {
 					key: 'avatarUrl',
 					align: 'center',
 					render: (text, record) => {
-						return <img className="common_table_img" src={`${config.baseUrl}/${record.photo}`} />;
+						return <img className="common_table_img" src={`${config.imgUrl}/${record.photo}`} />;
 					},
 				},
 				{
@@ -155,7 +165,7 @@ class Member extends React.Component {
 					},
 				},
 				{
-					title: '累计消费',
+					title: '支付记录',
 					dataIndex: 'consume',
 					key: 'consume',
 					align: 'center',
@@ -167,32 +177,32 @@ class Member extends React.Component {
 						);
 					},
 				},
-				{
-					title: '所有订单',
-					dataIndex: 'hello',
-					key: 'hello',
-					align: 'center',
-					render: (text, record) => {
-						return (
-							<a href="javascript:;" onClick={this.onSearchOrder.bind(this, record)}>
-								查看
-							</a>
-						);
-					},
-				},
-				{
-					title: '所有评价',
-					dataIndex: 'evaluate',
-					key: 'evaluate',
-					align: 'center',
-					render: (text, record) => {
-						return (
-							<a href="javascript:;" onClick={this.onSearchEvaluate.bind(this, record)}>
-								查看
-							</a>
-						);
-					},
-				},
+				// {
+				// 	title: '所有订单',
+				// 	dataIndex: 'hello',
+				// 	key: 'hello',
+				// 	align: 'center',
+				// 	render: (text, record) => {
+				// 		return (
+				// 			<a href="javascript:;" onClick={this.onSearchOrder.bind(this, record)}>
+				// 				查看
+				// 			</a>
+				// 		);
+				// 	},
+				// },
+				// {
+				// 	title: '所有评价',
+				// 	dataIndex: 'evaluate',
+				// 	key: 'evaluate',
+				// 	align: 'center',
+				// 	render: (text, record) => {
+				// 		return (
+				// 			<a href="javascript:;" onClick={this.onSearchEvaluate.bind(this, record)}>
+				// 				查看
+				// 			</a>
+				// 		);
+				// 	},
+				// },
 				{
 					title: '账户余额',
 					dataIndex: 'balance',
@@ -216,12 +226,13 @@ class Member extends React.Component {
 				},
 			],
 			{
-				addressDialogVisible,
-				addressData,
-				userList,
-				orderDialogVisible,
-				orderList,
 				evaluateDialogVisible,
+				addressDialogVisible,
+				orderDialogVisible,
+				payDialogVisible,
+				dialogData,
+				userList,
+				orderList,
 				evaluateList,
 			} = this.state,
 			formItemLayout = {
@@ -236,11 +247,11 @@ class Member extends React.Component {
 						<Col span={6}>
 							<FormItem label="会员级别">
 								{getFieldDecorator('member')(
-									<Select placeholder="请选择">
+									<Select placeholder="请选择" onSelect={this.onSearchMember.bind(this)}>
 										<Option value={9}>全部</Option>
 										<Option value={1}>普通用户</Option>
-										<Option value={2}>黄金VIP</Option>
-										<Option value={3}>钻石VIP</Option>
+										<Option value={2}>MOVING会员</Option>
+										<Option value={3}>MOVING PLUS会员</Option>
 									</Select>,
 								)}
 							</FormItem>
@@ -275,10 +286,13 @@ class Member extends React.Component {
 				</div>
 				{addressDialogVisible ? (
 					<AddressDialog
-						data={addressData}
+						data={dialogData}
 						onControllerAddressDialog={this.onControllerAddressDialog.bind(this)}
 					/>
 				) : null}
+				{payDialogVisible && (
+					<PayDialog data={dialogData} onControllerAddressDialog={this.onControllerPayDialog.bind(this)} />
+				)}
 				{orderDialogVisible ? (
 					<OrderDialog data={orderList} onControllerOrderDialog={this.onControllerOrderDialog.bind(this)} />
 				) : null}
