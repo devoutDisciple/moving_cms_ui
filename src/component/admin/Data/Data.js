@@ -12,6 +12,16 @@ export default class Order extends React.Component {
 	}
 
 	state = {
+		dataNum: {
+			totalOrderNum: 0,
+			todayOrderNum: 0,
+			totalMoney: 0,
+			todayMoney: 0,
+			totalUserNum: 0,
+			todayUserNum: 0,
+			totalCabinetCellNum: 0,
+			abledCabinetCellNum: 0,
+		},
 		orderNum: 0,
 		orderPrice: 0,
 		todayNum: 0,
@@ -25,7 +35,17 @@ export default class Order extends React.Component {
 		moneyCharts: false, // 是否展示图表
 	};
 
-	async componentDidMount() {}
+	async componentDidMount() {
+		await this.getOrderData();
+	}
+
+	// 获取订单数据汇总
+	async getOrderData() {
+		let res = await request.get('/order/getDataNum');
+		let data = res.data || {};
+		console.log(data, 111);
+		this.setState({ dataNum: data });
+	}
 
 	// 点击销售量按钮
 	async onClickSalesBtn(type) {
@@ -130,29 +150,29 @@ export default class Order extends React.Component {
 	}
 
 	render() {
-		let { moneyType, salesType, salesCharts, moneyCharts } = this.state;
+		let { moneyType, salesType, salesCharts, moneyCharts, dataNum } = this.state;
 		return (
 			<div className="data">
 				<div className="data_cart">
 					<div className="data_cart_chunk">
 						<div className="data_cart_chunk_title">订单总量（单）</div>
-						<div className="data_cart_chunk_number">100</div>
-						<div className="data_cart_chunk_bottom">今日订单总量： 20</div>
+						<div className="data_cart_chunk_number">{dataNum.totalOrderNum || 0}</div>
+						<div className="data_cart_chunk_bottom">今日订单总量： {dataNum.todayOrderNum || 0}</div>
 					</div>
 					<div className="data_cart_chunk">
 						<div className="data_cart_chunk_title">销售额（元）</div>
-						<div className="data_cart_chunk_number">63228</div>
-						<div className="data_cart_chunk_bottom">今日销售额： 3773</div>
+						<div className="data_cart_chunk_number">{dataNum.totalMoney || 0}</div>
+						<div className="data_cart_chunk_bottom">今日销售额： {dataNum.todayMoney || 0}</div>
 					</div>
 					<div className="data_cart_chunk">
-						<div className="data_cart_chunk_title">门店数量（个）</div>
-						<div className="data_cart_chunk_number">799</div>
-						<div className="data_cart_chunk_bottom">正常运行： 212</div>
+						<div className="data_cart_chunk_title">柜子格口数量</div>
+						<div className="data_cart_chunk_number">{dataNum.totalCabinetCellNum || 0}</div>
+						<div className="data_cart_chunk_bottom">剩余可用格口： {dataNum.abledCabinetCellNum || 0}</div>
 					</div>
 					<div className="data_cart_chunk">
 						<div className="data_cart_chunk_title">会员数量（人）</div>
-						<div className="data_cart_chunk_number">6662</div>
-						<div className="data_cart_chunk_bottom">今日新增： 89</div>
+						<div className="data_cart_chunk_number">{dataNum.totalUserNum || 0}</div>
+						<div className="data_cart_chunk_bottom">今日新增： {dataNum.todayUserNum || 0}</div>
 					</div>
 				</div>
 				<Row className="data_common_detail">
