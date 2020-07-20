@@ -36,15 +36,53 @@ export default class Order extends React.Component {
 	};
 
 	async componentDidMount() {
-		await this.getOrderData();
+		// 获取订单数量汇总
+		await this.getOrderNumData();
+		// 获取订单数量根据时间
+		await this.getOrderNumDataByTime(1);
+		// 获取金额数据汇总
+		await this.getMoneyNumDataByTime(1);
 	}
 
 	// 获取订单数据汇总
-	async getOrderData() {
+	async getOrderNumData() {
 		let res = await request.get('/order/getDataNum');
 		let data = res.data || {};
-		console.log(data, 111);
 		this.setState({ dataNum: data });
+	}
+
+	// 获取订单数据汇总
+	async getOrderNumDataByTime(type) {
+		let res = await request.get('/order/getSalesByTime', { type: type });
+		echarts.registerTheme('walden', echartsTheme);
+		let myChart = echarts.init(document.getElementById('data_member1'), 'walden');
+		let data = res.data || [],
+			echartsData = [];
+		data.map((item) => {
+			echartsData.push({ value: [item.days, item.count] });
+		});
+		if (echartsData.length == 0) return this.setState({ salesCharts: false });
+		let option = this.renderCommonOption('{value} 单', '订单量', echartsData);
+		this.setState({ salesCharts: true }, () => {
+			myChart.setOption(option);
+		});
+	}
+
+	// 获取金额数据汇总
+	async getMoneyNumDataByTime(type) {
+		let res = await request.get('/bill/getMoneyNumByTime', { type: type });
+		echarts.registerTheme('walden', echartsTheme);
+		let myChart = echarts.init(document.getElementById('data_member2'), 'walden');
+		let data = res.data || [],
+			echartsData = [];
+		data.map((item) => {
+			echartsData.push({ value: [item.days, Number(item.money)] });
+		});
+		if (echartsData.length == 0) return this.setState({ moneyCharts: false });
+		let option = this.renderCommonOption('{value} 元', '付款金额', echartsData);
+		this.setState({ moneyCharts: true }, () => {
+			myChart.setOption(option);
+		});
 	}
 
 	// 点击销售量按钮
@@ -53,22 +91,21 @@ export default class Order extends React.Component {
 			{
 				salesType: type,
 			},
-			() => this.getSales(type),
+			() => this.getOrderNumDataByTime(type),
 		);
 	}
 
-	// 点击销售量按钮
+	// 点击销售额按钮
 	async onClickMoneyBtn(type) {
 		this.setState(
 			{
 				moneyType: type,
 			},
-			() => this.getSalesMoney(type),
+			() => this.getMoneyNumDataByTime(type),
 		);
 	}
 
-	renderCommonOption(yAxisFormatter, data) {
-		console.log(1111);
+	renderCommonOption(yAxisFormatter, seriesName, data) {
 		return {
 			grid: {
 				left: '3%',
@@ -94,7 +131,7 @@ export default class Order extends React.Component {
 			},
 			series: [
 				{
-					name: '销售量',
+					name: seriesName,
 					type: 'line',
 					data: data,
 				},
@@ -183,19 +220,19 @@ export default class Order extends React.Component {
 								type={salesType == 1 ? 'primary' : null}
 								onClick={this.onClickSalesBtn.bind(this, 1)}
 							>
-								本周
+								最近七天
 							</Button>
 							<Button
 								type={salesType == 2 ? 'primary' : null}
 								onClick={this.onClickSalesBtn.bind(this, 2)}
 							>
-								本月
+								最近一月
 							</Button>
 							<Button
 								type={salesType == 3 ? 'primary' : null}
 								onClick={this.onClickSalesBtn.bind(this, 3)}
 							>
-								本年
+								最近一年
 							</Button>
 						</div>
 					</Row>
@@ -210,19 +247,19 @@ export default class Order extends React.Component {
 								type={moneyType == 1 ? 'primary' : null}
 								onClick={this.onClickMoneyBtn.bind(this, 1)}
 							>
-								本周
+								最近七天
 							</Button>
 							<Button
 								type={moneyType == 2 ? 'primary' : null}
 								onClick={this.onClickMoneyBtn.bind(this, 2)}
 							>
-								本月
+								最近一月
 							</Button>
 							<Button
 								type={moneyType == 3 ? 'primary' : null}
 								onClick={this.onClickMoneyBtn.bind(this, 3)}
 							>
-								本年
+								最近一年
 							</Button>
 						</div>
 					</Row>

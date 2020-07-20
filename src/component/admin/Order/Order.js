@@ -45,7 +45,7 @@ class Order extends React.Component {
 		let { current, pagesize } = this.state;
 		let values = this.props.form.getFieldsValue();
 		values = Object.assign(values, { current, pagesize });
-		let res = await Request.get('/order/getAll', values);
+		let res = await Request.get('/order/getAllByPagesize', values);
 		let data = res.data || {};
 		console.log(data, 33);
 		let dataSource = data.dataSource || [],
