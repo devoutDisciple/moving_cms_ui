@@ -1,9 +1,11 @@
 import React from 'react';
-import { Row, Button } from 'antd';
-import './index.less';
+import { Row, Col, Button } from 'antd';
 import request from '../../../request/AxiosRequest';
 import echartsTheme from '../../../util/echartsTheme.js';
 import echarts from 'echarts';
+import PayType from './PayType';
+import OrderType from './OrderType';
+import './index.less';
 
 export default class Order extends React.Component {
 	constructor(props) {
@@ -22,15 +24,8 @@ export default class Order extends React.Component {
 			totalCabinetCellNum: 0,
 			abledCabinetCellNum: 0,
 		},
-		orderNum: 0,
-		orderPrice: 0,
-		todayNum: 0,
-		todayMoney: 0,
 		salesType: 1,
 		moneyType: 1,
-		alreadyMoney: 0, //已经提现金额
-		resMoney: 0, // 可提现金额，
-		adminMoney: 0, // 平台营收
 		salesCharts: false, // 是否展示图表
 		moneyCharts: false, // 是否展示图表
 	};
@@ -139,53 +134,6 @@ export default class Order extends React.Component {
 		};
 	}
 
-	// 获取本周销售总量
-	async getSales(type) {
-		let res = await request.get('/order/getSales', { type: type });
-		echarts.registerTheme('walden', echartsTheme);
-		let myChart = echarts.init(document.getElementById('data_member1'), 'walden');
-		let data = res.data || [],
-			echartsData = [];
-		data.map((item) => {
-			echartsData.push({ value: [item.days, item.count] });
-		});
-		if (echartsData.length == 0) return this.setState({ salesCharts: false });
-		let option = this.renderCommonOption('{value} 单', echartsData);
-		this.setState({ salesCharts: true }, () => {
-			myChart.setOption(option);
-		});
-	}
-
-	// 获得销售额数据汇总
-	async getSalesMoney(type) {
-		let res = await request.get('/order/getMoney', { type: type });
-		let myChart = echarts.init(document.getElementById('data_member2'));
-		let data = res.data || [],
-			echartsData = [];
-		data.map((item) => {
-			echartsData.push({ value: [item.days, Number(item.money)] });
-		});
-		if (echartsData.length == 0) return this.setState({ moneyCharts: false });
-		let option = this.renderCommonOption('{value} 元', echartsData);
-		this.setState({ moneyCharts: true }, () => {
-			myChart.setOption(option);
-		});
-	}
-
-	async getData() {
-		let res = await request.get('/order/getData');
-		let data = res.data;
-		this.setState({
-			orderNum: data.orderNum || 0,
-			orderPrice: data.orderPrice || 0,
-			todayNum: data.todayNum && data.todayNum.length != 0 && data.todayNum[0].count ? data.todayNum[0].count : 0,
-			todayMoney:
-				data.todayMoney && data.todayMoney.length != 0 && data.todayMoney[0].count
-					? data.todayMoney[0].count
-					: 0,
-		});
-	}
-
 	render() {
 		let { moneyType, salesType, salesCharts, moneyCharts, dataNum } = this.state;
 		return (
@@ -212,59 +160,69 @@ export default class Order extends React.Component {
 						<div className="data_cart_chunk_bottom">今日新增： {dataNum.todayUserNum || 0}</div>
 					</div>
 				</div>
-				<Row className="data_common_detail">
-					<Row className="data_common_detail_title">
-						<div className="data_common_detail_title_left">订单量统计</div>
-						<div className="data_common_detail_title_right">
-							<Button
-								type={salesType == 1 ? 'primary' : null}
-								onClick={this.onClickSalesBtn.bind(this, 1)}
-							>
-								最近七天
-							</Button>
-							<Button
-								type={salesType == 2 ? 'primary' : null}
-								onClick={this.onClickSalesBtn.bind(this, 2)}
-							>
-								最近一月
-							</Button>
-							<Button
-								type={salesType == 3 ? 'primary' : null}
-								onClick={this.onClickSalesBtn.bind(this, 3)}
-							>
-								最近一年
-							</Button>
-						</div>
-					</Row>
-					<Row id="data_member1" className="data_common_detail_content" />
-					{!salesCharts && <div className="chart_empty">暂无数据</div>}
+				<Row>
+					<Col span={12} className="data_common_detail">
+						<Row className="data_common_detail_title">
+							<div className="data_common_detail_title_left">订单量统计</div>
+							<div className="data_common_detail_title_right">
+								<Button
+									type={salesType == 1 ? 'primary' : null}
+									onClick={this.onClickSalesBtn.bind(this, 1)}
+								>
+									最近七天
+								</Button>
+								<Button
+									type={salesType == 2 ? 'primary' : null}
+									onClick={this.onClickSalesBtn.bind(this, 2)}
+								>
+									最近一月
+								</Button>
+								<Button
+									type={salesType == 3 ? 'primary' : null}
+									onClick={this.onClickSalesBtn.bind(this, 3)}
+								>
+									最近一年
+								</Button>
+							</div>
+						</Row>
+						<Row id="data_member1" className="data_common_detail_content" />
+						{!salesCharts && <div className="chart_empty">暂无数据</div>}
+					</Col>
+					<Col span={12} className="data_common_detail">
+						<Row className="data_common_detail_title">
+							<div className="data_common_detail_title_left">销售额统计</div>
+							<div className="data_common_detail_title_right">
+								<Button
+									type={moneyType == 1 ? 'primary' : null}
+									onClick={this.onClickMoneyBtn.bind(this, 1)}
+								>
+									最近七天
+								</Button>
+								<Button
+									type={moneyType == 2 ? 'primary' : null}
+									onClick={this.onClickMoneyBtn.bind(this, 2)}
+								>
+									最近一月
+								</Button>
+								<Button
+									type={moneyType == 3 ? 'primary' : null}
+									onClick={this.onClickMoneyBtn.bind(this, 3)}
+								>
+									最近一年
+								</Button>
+							</div>
+						</Row>
+						<Row id="data_member2" className="data_common_detail_content" />
+						{!moneyCharts && <div className="chart_empty">暂无数据</div>}
+					</Col>
 				</Row>
-				<Row className="data_common_detail">
-					<Row className="data_common_detail_title">
-						<div className="data_common_detail_title_left">销售额统计</div>
-						<div className="data_common_detail_title_right">
-							<Button
-								type={moneyType == 1 ? 'primary' : null}
-								onClick={this.onClickMoneyBtn.bind(this, 1)}
-							>
-								最近七天
-							</Button>
-							<Button
-								type={moneyType == 2 ? 'primary' : null}
-								onClick={this.onClickMoneyBtn.bind(this, 2)}
-							>
-								最近一月
-							</Button>
-							<Button
-								type={moneyType == 3 ? 'primary' : null}
-								onClick={this.onClickMoneyBtn.bind(this, 3)}
-							>
-								最近一年
-							</Button>
-						</div>
-					</Row>
-					<Row id="data_member2" className="data_common_detail_content" />
-					{!moneyCharts && <div className="chart_empty">暂无数据</div>}
+				<Row>
+					<Col span={12} className="data_common_detail">
+						<OrderType />
+					</Col>
+					<Col span={12} className="data_common_detail">
+						<PayType />
+					</Col>
 				</Row>
 			</div>
 		);

@@ -9,21 +9,39 @@ import './index.less';
 import logo from '../../asserts/logo.png';
 
 // 管理员
+
+// 轮播图管理
 import Swiper from '../admin/Swiper/Swiper';
+// 区域管理
 import Area from '../admin/Area/Area';
+// 商店管理
 import Shop from '../admin/Shop/Shop';
+// 洗衣柜管理
 import Cabinet from '../admin/Cabinet/Cabinet';
+// 会员管理
 import Member from '../admin/Member/Member';
-import Today from '../admin/Today/Today';
+// 订单管理
 import Order from '../admin/Order/Order';
-import Money from '../admin/Money/Money';
-import Evaluate from '../admin/Evaluate/Evaluate';
+// 数据汇总
 import Data from '../admin/Data/Data';
-import Adver from '../admin/Adver/Adver';
-import Rate from '../admin/Rate/Rate';
+// 意见反馈
 import Options from '../admin/Options/Options';
+// 积分兑换
 import Intergral from '../admin/Intergral/Intergral';
+// 衣物管理
 import Clothing from '../admin/Clothing/Clothing';
+// 账号管理
+import Account from '../admin/Account/Account';
+
+// -------------------------------------------
+// 广告图
+import Adver from '../admin/Adver/Adver';
+// 费率管理
+import Rate from '../admin/Rate/Rate';
+// 退款管理
+import Money from '../admin/Money/Money';
+// 评价管理
+import Evaluate from '../admin/Evaluate/Evaluate';
 
 // 厨房
 import MyShop from '../shop/MyShop/MyShop';
@@ -58,6 +76,7 @@ export default class MyLayout extends React.Component {
 								<Switch>
 									<Route exact path="/home" component={Shop} />
 									<Route path="/home/shop" component={Shop} />
+									<Route path="/home/account" component={Account} />
 									<Route path="/home/swiper" component={Swiper} />
 									<Route path="/home/cabinet" component={Cabinet} />
 									<Route path="/home/member" component={Member} />
@@ -67,7 +86,6 @@ export default class MyLayout extends React.Component {
 									<Route path="/home/rate" component={Rate} />
 									<Route path="/home/adver" component={Adver} />
 									<Route path="/home/area" component={Area} />
-									<Route path="/home/today" component={Today} />
 									<Route path="/home/money" component={Money} />
 									<Route path="/home/evaluate" component={Evaluate} />
 									<Route path="/home/data" component={Data} />
