@@ -32,23 +32,8 @@ import Intergral from '../admin/Intergral/Intergral';
 import Clothing from '../admin/Clothing/Clothing';
 // 账号管理
 import Account from '../admin/Account/Account';
-
-// -------------------------------------------
-// 广告图
-import Adver from '../admin/Adver/Adver';
-// 费率管理
-import Rate from '../admin/Rate/Rate';
-// 退款管理
-import Money from '../admin/Money/Money';
-// 评价管理
-import Evaluate from '../admin/Evaluate/Evaluate';
-
-// 厨房
-import MyShop from '../shop/MyShop/MyShop';
-import ShopGoods from '../shop/Goods/Goods';
-import ShopOrder from '../shop/Order/Order';
-import ShopBill from '../shop/Bill/Bill';
-import ShopData from '../shop/Data/Data';
+// 异常柜子打开记录
+import Exception from '../admin/Exception/index';
 
 @inject('GlobalStore')
 @observer
@@ -83,23 +68,12 @@ export default class MyLayout extends React.Component {
 									<Route path="/home/clothing" component={Clothing} />
 									<Route path="/home/order" component={Order} />
 									<Route path="/home/intergral" component={Intergral} />
-									<Route path="/home/rate" component={Rate} />
-									<Route path="/home/adver" component={Adver} />
 									<Route path="/home/area" component={Area} />
-									<Route path="/home/money" component={Money} />
-									<Route path="/home/evaluate" component={Evaluate} />
 									<Route path="/home/data" component={Data} />
+									<Route path="/home/exception" component={Exception} />
 									<Route path="/home/options" component={Options} />
 								</Switch>
-							) : (
-								<Switch>
-									<Route exact path="/home/shop/data" component={ShopData} />
-									<Route exact path="/home/shop/my" component={MyShop} />
-									<Route exact path="/home/shop/goods" component={ShopGoods} />
-									<Route exact path="/home/shop/order" component={ShopOrder} />
-									<Route exact path="/home/shop/bill" component={ShopBill} />
-								</Switch>
-							)}
+							) : null}
 						</div>
 					</Content>
 				</Layout>

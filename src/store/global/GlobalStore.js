@@ -77,22 +77,13 @@ class GlobalStore {
 		try {
 			let user = await request.post('/account/login', values);
 			runInAction(() => {
-				if (user.data.role == 2) {
-					this.setUserinfo({
-						shopid: user.data.shopid,
-					});
-				}
 				this.setUserinfo({
 					username: user.data.username,
 					role: user.data.role,
 				});
-				console.log(user.data, 66677788);
-				if (user.data.role == 2) {
-					location.hash = '#/home/shop/order';
-					localStorage.setItem('campus', user.data.campus);
-				}
+				console.log(user.data, 9999);
 				if (user.data.role == 1) {
-					location.hash = '#/home/shop';
+					location.hash = '#/home/data';
 				}
 				this.setLogin(true);
 			});

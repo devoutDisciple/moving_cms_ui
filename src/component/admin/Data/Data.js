@@ -23,6 +23,8 @@ export default class Order extends React.Component {
 			todayUserNum: 0,
 			totalCabinetCellNum: 0,
 			abledCabinetCellNum: 0,
+			cabinetUseTimes: 0,
+			cabinetUseErrorTimes: 0,
 		},
 		salesType: 1,
 		moneyType: 1,
@@ -136,6 +138,15 @@ export default class Order extends React.Component {
 
 	render() {
 		let { moneyType, salesType, salesCharts, moneyCharts, dataNum } = this.state;
+		let successRate = '0%';
+		if (dataNum.cabinetUseTimes > 0) {
+			successRate =
+				Math.round(
+					((dataNum.cabinetUseTimes - dataNum.cabinetUseErrorTimes) / dataNum.cabinetUseTimes) * 10000,
+				) /
+					100.0 +
+				'%';
+		}
 		return (
 			<div className="data">
 				<div className="data_cart">
@@ -158,6 +169,13 @@ export default class Order extends React.Component {
 						<div className="data_cart_chunk_title">会员数量（人）</div>
 						<div className="data_cart_chunk_number">{dataNum.totalUserNum || 0}</div>
 						<div className="data_cart_chunk_bottom">今日新增： {dataNum.todayUserNum || 0}</div>
+					</div>
+					<div className="data_cart_chunk">
+						<div className="data_cart_chunk_title">格口操作次数</div>
+						<div className="data_cart_chunk_number">{dataNum.cabinetUseTimes || 0}</div>
+						<div className="data_cart_chunk_bottom">
+							失败次数：{dataNum.cabinetUseErrorTimes || 0} 成功率：{successRate}
+						</div>
 					</div>
 				</div>
 				<Row>

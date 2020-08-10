@@ -32,7 +32,7 @@ class Swiper extends React.Component {
 		await this.onSearchCabinet();
 	}
 
-	// 查询快递柜
+	// 查询洗衣柜
 	async onSearchCabinet() {
 		let values = this.props.form.getFieldsValue();
 		let swipers = await Request.get('/cabinet/getByShopId', values);

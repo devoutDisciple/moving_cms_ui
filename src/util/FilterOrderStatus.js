@@ -40,7 +40,7 @@ export default {
 		// 下单类型：1-通过柜子下单 2-上门取衣 3-积分兑换 4-店员录入订单
 		switch (Number(status)) {
 			case 1:
-				data = '快递柜订单';
+				data = '洗衣柜订单';
 				break;
 			case 2:
 				data = '上门取衣订单';
@@ -50,6 +50,34 @@ export default {
 				break;
 			case 4:
 				data = '店员录入订单';
+				break;
+		}
+		return data;
+	},
+	// 判断洗衣柜是否打开
+	filterCabinetSuccess: function (status) {
+		let data = '';
+		// 下单类型：1-成功 2-失败
+		switch (Number(status)) {
+			case 1:
+				data = '成功';
+				break;
+			case 2:
+				data = '失败';
+				break;
+		}
+		return data;
+	},
+	// 判断洗衣柜打开人员类型
+	filterCabinetUserType: function (status) {
+		let data = '';
+		// 下单类型：1-用户 2-店员
+		switch (Number(status)) {
+			case 1:
+				data = '用户';
+				break;
+			case 2:
+				data = '店员';
 				break;
 		}
 		return data;
@@ -103,6 +131,7 @@ export default {
 		}
 		return data;
 	},
+
 	// 商品评分
 	filterGoodsGrade: function (status) {
 		let data = '';

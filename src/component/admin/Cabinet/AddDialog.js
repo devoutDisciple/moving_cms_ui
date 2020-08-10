@@ -96,7 +96,7 @@ class AddDialog extends React.Component {
 			<div>
 				<Modal
 					className="common_dialog"
-					title="新增快递柜"
+					title="新增洗衣柜"
 					visible={true}
 					onOk={this.handleOk.bind(this)}
 					onCancel={this.handleCancel.bind(this)}

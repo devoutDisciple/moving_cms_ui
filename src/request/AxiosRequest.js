@@ -103,6 +103,7 @@ export default {
 				data: params,
 			})
 				.then((res) => {
+					console.log(res, 9999888);
 					if (res.code == 200) resolve(res);
 					else reject(res);
 				})
