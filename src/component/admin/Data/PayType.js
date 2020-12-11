@@ -88,7 +88,7 @@ class Evaluate extends React.Component {
 		return (
 			<>
 				<Row className="data_common_detail_title">
-					<div className="data_common_detail_title_left">订单类型分析</div>
+					<div className="data_common_detail_title_left">收入来源汇总</div>
 				</Row>
 				<Row id="bill_type" className="data_common_detail_content" />
 				{!showCharts && <div className="chart_empty">暂无数据</div>}
