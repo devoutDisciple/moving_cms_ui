@@ -53,27 +53,28 @@ let plugins = [
 
 module.exports = merge(webpackBaseConfig('production'), {
 	optimization: {
+		runtimeChunk: 'single',
 		splitChunks: {
-			chunks: 'async',
-			minSize: 30000,
-			maxSize: 0,
-			minChunks: 1,
-			maxAsyncRequests: 5,
-			maxInitialRequests: 3,
-			automaticNameDelimiter: '~',
-			name: true,
+			chunks: 'all',
 			cacheGroups: {
-				vendors: {
-					test: /[\\/]node_modules[\\/]/,
-					priority: -10,
+				antd: {
+					test: /[\\/]antd[\\/]/,
+					name: 'antd',
+					chunks: 'all'
 				},
-				default: {
-					minChunks: 2,
-					priority: -20,
-					reuseExistingChunk: true
+				echarts: {
+					test: /[\\/]echarts[\\/]/,
+					name: 'echarts',
+					chunks: 'all'
+				},
+				reactLib: {
+					test: /[\\/](react|react-dom)[\\/]/,
+					name: 'reactLib',
+					chunks: 'all'
 				}
 			}
 		}
+
 	},
 	plugins: startAnalyzer ? [...plugins, new BundleAnalyzerPlugin({
 		analyzerPort: 8288,

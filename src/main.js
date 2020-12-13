@@ -23,7 +23,9 @@ const render = () => {
 		document.getElementById('root'),
 	);
 };
+
 render();
+
 if (module.hot) {
 	module.hot.accept();
 }

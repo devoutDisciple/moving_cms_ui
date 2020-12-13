@@ -151,12 +151,12 @@ export default class Order extends React.Component {
 			<div className="data">
 				<div className="data_cart">
 					<div className="data_cart_chunk">
-						<div className="data_cart_chunk_title">订单总量（单）</div>
+						<div className="data_cart_chunk_title">订单总量(单)</div>
 						<div className="data_cart_chunk_number">{dataNum.totalOrderNum || 0}</div>
 						<div className="data_cart_chunk_bottom">今日订单总量： {dataNum.todayOrderNum || 0}</div>
 					</div>
 					<div className="data_cart_chunk">
-						<div className="data_cart_chunk_title">销售额（元）</div>
+						<div className="data_cart_chunk_title">总收入(元)</div>
 						<div className="data_cart_chunk_number">{dataNum.totalMoney || 0}</div>
 						<div className="data_cart_chunk_bottom">今日销售额： {dataNum.todayMoney || 0}</div>
 					</div>

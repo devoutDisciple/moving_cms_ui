@@ -34,7 +34,7 @@ module.exports = (env = 'development') => {
 		entry: getRealPath('../src/main.js'),
 		output: {
 			path: getRealPath('../dist'),
-			filename: 'bundle.js',
+			filename: env ? '[name].bundle.js' : '[name].[contenthash].js',
 			publicPath: env ? config.dev.publicPath : config.prod.publicPath,
 		},
 		module: {

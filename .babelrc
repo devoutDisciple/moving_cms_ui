@@ -8,7 +8,7 @@
                 "safari": "11.1",
                 "browsers": "> 0.25%"
             },
-            "useBuiltIns": "usage",
+            "useBuiltIns": "usage"
         }],
         "@babel/react"
     ],
@@ -17,7 +17,7 @@
             {
                 "libraryName": "antd",
                 "style": true
-            },
+            }
         ],
         "@babel/plugin-transform-arrow-functions",
         "@babel/plugin-transform-block-scoped-functions",
@@ -31,6 +31,6 @@
         "@babel/plugin-proposal-function-sent",
         "@babel/plugin-proposal-export-namespace-from",
         "@babel/plugin-proposal-numeric-separator",
-        "@babel/plugin-proposal-throw-expressions",
+        "@babel/plugin-proposal-throw-expressions"
     ]
 }
