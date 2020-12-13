@@ -14,7 +14,8 @@ export default class OrderDialog extends React.Component {
 	};
 
 	async componentDidMount() {
-		let data = this.props.data;
+		let { data } = this.props;
+		console.log(data, 111);
 		data.map((item, index) => {
 			item.key = index;
 			item.order_time = moment(item.order_time).format('YYYY-MM-DD HH:mm:ss');
@@ -90,15 +91,14 @@ export default class OrderDialog extends React.Component {
 		return (
 			<div>
 				<Modal
-					className="common_dialog common_max_dialog"
-					title="消费记录"
+					className="common_dialog common_max_dialog_max"
+					title="洗衣记录"
 					visible={true}
 					footer={null}
 					onCancel={this.handleCancel.bind(this)}
 				>
 					<Table
 						bordered
-						expandedRowRender={this.expandedRowRender.bind(this)}
 						dataSource={data}
 						columns={columns}
 						pagination={{

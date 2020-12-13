@@ -58,7 +58,7 @@ class Member extends React.Component {
 
 	// 查看用户所有订单
 	async onSearchOrder(record) {
-		let res = await request.get('/order/getListByOpenid', { openid: record.openid });
+		let res = await request.get('/order/getAllListByUserId', { userid: record.id });
 		this.setState({ orderList: res.data || [] }, () => {
 			this.onControllerOrderDialog();
 		});
@@ -157,11 +157,7 @@ class Member extends React.Component {
 					key: 'address',
 					align: 'center',
 					render: (text, record) => {
-						return (
-							<a href="javascript:;" onClick={this.onSearchAddress.bind(this, record)}>
-								查看
-							</a>
-						);
+						return <a onClick={this.onSearchAddress.bind(this, record)}>查看</a>;
 					},
 				},
 				{
@@ -170,11 +166,7 @@ class Member extends React.Component {
 					key: 'consume',
 					align: 'center',
 					render: (text, record) => {
-						return (
-							<a href="javascript:;" onClick={this.onSearchAllMoeny.bind(this, record)}>
-								查看
-							</a>
-						);
+						return <a onClick={this.onSearchAllMoeny.bind(this, record)}>查看</a>;
 					},
 				},
 				// {
@@ -183,11 +175,7 @@ class Member extends React.Component {
 				// 	key: 'hello',
 				// 	align: 'center',
 				// 	render: (text, record) => {
-				// 		return (
-				// 			<a href="javascript:;" onClick={this.onSearchOrder.bind(this, record)}>
-				// 				查看
-				// 			</a>
-				// 		);
+				// 		return <a onClick={this.onSearchOrder.bind(this, record)}>查看</a>;
 				// 	},
 				// },
 				// {
@@ -197,7 +185,7 @@ class Member extends React.Component {
 				// 	align: 'center',
 				// 	render: (text, record) => {
 				// 		return (
-				// 			<a href="javascript:;" onClick={this.onSearchEvaluate.bind(this, record)}>
+				// 			<a  onClick={this.onSearchEvaluate.bind(this, record)}>
 				// 				查看
 				// 			</a>
 				// 		);

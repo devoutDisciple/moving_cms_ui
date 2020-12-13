@@ -41,16 +41,18 @@ class Order extends React.Component {
 	}
 
 	// 查询所有订单
-	async onSearchOrder() {
+	async onSearchOrder(currentPage) {
 		let { current, pagesize } = this.state;
+		if (currentPage) current = currentPage;
 		let values = this.props.form.getFieldsValue();
-		values = Object.assign(values, { current, pagesize });
-		let res = await Request.get('/order/getAllByPagesize', values);
-		let data = res.data || {};
-		console.log(data, 33);
-		let dataSource = data.dataSource || [],
-			total = data.total || 0;
-		this.setState({ oderList: dataSource, total });
+		this.setState({ current }, async () => {
+			values = Object.assign(values, { current, pagesize });
+			let res = await Request.get('/order/getAllByPagesize', values);
+			let data = res.data || {};
+			let dataSource = data.dataSource || [],
+				total = data.total || 0;
+			this.setState({ oderList: dataSource, total });
+		});
 	}
 
 	// 查看订单详情
@@ -108,10 +110,46 @@ class Order extends React.Component {
 					align: 'center',
 				},
 				{
+					title: '折扣',
+					dataIndex: 'discount',
+					key: 'discount',
+					align: 'center',
+					render: (text) => {
+						if (!text || text === Number(10)) return <span>无折扣</span>;
+						return <span>{text} 折</span>;
+					},
+				},
+				{
+					title: '折扣费用',
+					dataIndex: 'subDiscountMoney',
+					key: 'subDiscountMoney',
+					align: 'center',
+				},
+				{
+					title: '加急费用',
+					dataIndex: 'urgencyMoney',
+					key: 'urgencyMoney',
+					align: 'center',
+					render: (text) => {
+						if (!text) return <span>--</span>;
+						return <span>{text}</span>;
+					},
+				},
+				{
+					title: '实付',
+					dataIndex: 'payMoney',
+					key: 'payMoney',
+					align: 'center',
+				},
+				{
 					title: '消耗积分',
 					dataIndex: 'intergral_num',
 					key: 'intergral_num',
 					align: 'center',
+					render: (text) => {
+						if (!text) return <span>--</span>;
+						return <span>{text}</span>;
+					},
 				},
 				{
 					title: '订单状态',
@@ -128,9 +166,9 @@ class Order extends React.Component {
 					key: 'is_sure',
 					align: 'center',
 					render: (text, record) => {
-						if (record.order_type === 1) {
-							if (text == 2) return <Badge status="success" text="店员已确认" />;
-							return <Badge status="error" text="店员未确认" />;
+						if (record.order_type === 1 || record.order_type === 4 || record.order_type === 5) {
+							if (text == 2) return <Badge status="success" text="已确认" />;
+							return <Badge status="error" text="未确认" />;
 						}
 						return <span>--</span>;
 					},
@@ -144,22 +182,6 @@ class Order extends React.Component {
 						return text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '';
 					},
 				},
-
-				// {
-				// 	title: '操作',
-				// 	dataIndex: 'operation',
-				// 	key: 'operation',
-				// 	align: 'center',
-				// 	render: (text, record) => {
-				// 		return (
-				// 			<span className="common_table_span">
-				// 				<a href="javascript:;" onClick={this.onSearchOrderDetail.bind(this, record)}>
-				// 					订单详情
-				// 				</a>
-				// 			</span>
-				// 		);
-				// 	},
-				// },
 			],
 			formItemLayout = {
 				labelCol: { span: 8 },
@@ -170,7 +192,7 @@ class Order extends React.Component {
 			<div className="common">
 				<div className="common_search">
 					<Form className="common_search_form" {...formItemLayout}>
-						<Col span={6}>
+						<Col span={4}>
 							<FormItem label="订单类型">
 								{getFieldDecorator('order_type')(
 									<Select placeholder="请选择" onSelect={this.onSearchOrder.bind(this)}>
@@ -183,7 +205,7 @@ class Order extends React.Component {
 								)}
 							</FormItem>
 						</Col>
-						<Col span={6}>
+						<Col span={4}>
 							<FormItem label="所属店铺">
 								{getFieldDecorator('shopid')(
 									<Select placeholder="请选择" onSelect={this.onSearchOrder.bind(this)}>
@@ -199,13 +221,23 @@ class Order extends React.Component {
 								)}
 							</FormItem>
 						</Col>
-						<Col span={6}>
+						<Col span={4}>
 							<FormItem label="订单号">
 								{getFieldDecorator('code')(<Input placeholder="请输入" />)}
 							</FormItem>
 						</Col>
+						<Col span={4}>
+							<FormItem label="用户名称">
+								{getFieldDecorator('username')(<Input placeholder="请输入" />)}
+							</FormItem>
+						</Col>
+						<Col span={4}>
+							<FormItem label="用户手机号">
+								{getFieldDecorator('phone')(<Input placeholder="请输入" />)}
+							</FormItem>
+						</Col>
 						<Col span={3} offset={1}>
-							<Button type="primary" onClick={this.onSearchOrder.bind(this)}>
+							<Button type="primary" onClick={this.onSearchOrder.bind(this, 1)}>
 								查询
 							</Button>
 						</Col>

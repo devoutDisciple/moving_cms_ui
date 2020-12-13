@@ -5,32 +5,34 @@ export default {
 		// 1-存储在柜子 2-店员取货，清洗中 3-待付款 4-待取货 5-已完成 6-预约上门，未付款 7-积分兑换  8-预约上门取衣，已付款
 		switch (Number(status)) {
 			case 1:
-				data = '待取货';
+				data = '待收取订单';
 				break;
 			case 2:
-				data = '清洗中';
+				data = '清洗中订单';
 				break;
 			case 3:
-				data = '用户待付款';
+				data = '待付款';
 				break;
 			case 4:
-				data = '用户待取货';
+				data = '待取货';
 				break;
 			case 5:
 				data = '已完成';
 				break;
 			case 6:
-				data = '预约上门，未付款';
+				data = '预约上门';
 				break;
 			case 7:
 				data = '积分兑换';
 				break;
 			case 8:
-				data = '预约上门取衣，已付款';
+				data = '预约成功';
 				break;
 			case 9:
-				data = '店员录入订单';
+				data = '待派送';
 				break;
+			default:
+				data = '待取货';
 		}
 		return data;
 	},
@@ -50,6 +52,9 @@ export default {
 				break;
 			case 4:
 				data = '店员录入订单';
+				break;
+			case 5:
+				data = '店内下单';
 				break;
 		}
 		return data;
