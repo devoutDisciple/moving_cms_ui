@@ -36,118 +36,65 @@ export default class MyMenu extends React.Component {
 	render() {
 		let role = this.globalStore.userinfo.role;
 		// 超级管理员
-		if (role == 1) {
-			return (
-				<Menu
-					mode="inline"
-					theme="dark"
-					onSelect={this.onSelect.bind(this)}
-					selectedKeys={[this.state.selectedKeys]}
-				>
-					<Menu.Item key="/home/data">
-						<Icon type="inbox" />
-						<span>数据汇总</span>
-					</Menu.Item>
-					<Menu.Item key="/home/area">
-						<Icon type="inbox" />
-						<span>区域管理</span>
-					</Menu.Item>
-					<Menu.Item key="/home/shop">
-						<Icon type="pie-chart" />
-						<span>店铺管理</span>
-					</Menu.Item>
-					<Menu.Item key="/home/account">
-						<Icon type="pie-chart" />
-						<span>账号管理</span>
-					</Menu.Item>
-					<Menu.Item key="/home/swiper">
-						<Icon type="pie-chart" />
-						<span>首页轮播图</span>
-					</Menu.Item>
-					<Menu.Item key="/home/cabinet">
-						<Icon type="inbox" />
-						<span>洗衣柜管理</span>
-					</Menu.Item>
-					<Menu.Item key="/home/clothing">
-						<Icon type="inbox" />
-						<span>衣物管理</span>
-					</Menu.Item>
-					<Menu.Item key="/home/order">
-						<Icon type="inbox" />
-						<span>订单管理</span>
-					</Menu.Item>
-					<Menu.Item key="/home/intergral">
-						<Icon type="inbox" />
-						<span>积分兑换管理</span>
-					</Menu.Item>
-					<Menu.Item key="/home/member">
-						<Icon type="inbox" />
-						<span>会员管理</span>
-					</Menu.Item>
-					<Menu.Item key="/home/exception">
-						<Icon type="inbox" />
-						<span>柜子使用记录</span>
-					</Menu.Item>
-					<Menu.Item key="/home/options">
-						<Icon type="inbox" />
-						<span>意见反馈</span>
-					</Menu.Item>
-					{/* <Menu.Item key="/home/rate">
-						<Icon type="inbox" />
-						<span>费率管理</span>
-					</Menu.Item>
-					<Menu.Item key="/home/adver">
-						<Icon type="inbox" />
-						<span>广告录入</span>
-					</Menu.Item>
-					
-					<Menu.Item key="/home/today">
-						<Icon type="inbox" />
-						<span>今日推荐</span>
-					</Menu.Item>
-					<Menu.Item key="/home/money">
-						<Icon type="inbox" />
-						<span>提现管理</span>
-					</Menu.Item>
-					<Menu.Item key="/home/evaluate">
-						<Icon type="inbox" />
-						<span>用户评价</span>
-					</Menu.Item>
-					<Menu.Item key="/home/options">
-						<Icon type="inbox" />
-						<span>意见反馈</span>
-					</Menu.Item> */}
-				</Menu>
-			);
-		}
-
+		if (role != 1) return <></>;
 		return (
 			<Menu
 				mode="inline"
 				theme="dark"
 				onSelect={this.onSelect.bind(this)}
 				selectedKeys={[this.state.selectedKeys]}
-				inlineCollapsed={false}
 			>
-				<Menu.Item key="/home/shop/order">
+				<Menu.Item key="/home/data">
+					<Icon type="inbox" />
+					<span>数据汇总</span>
+				</Menu.Item>
+				<Menu.Item key="/home/adver">
+					<Icon type="inbox" />
+					<span>APP首屏广告</span>
+				</Menu.Item>
+				<Menu.Item key="/home/area">
+					<Icon type="inbox" />
+					<span>区域管理</span>
+				</Menu.Item>
+				<Menu.Item key="/home/shop">
+					<Icon type="pie-chart" />
+					<span>店铺管理</span>
+				</Menu.Item>
+				<Menu.Item key="/home/account">
+					<Icon type="pie-chart" />
+					<span>账号管理</span>
+				</Menu.Item>
+				<Menu.Item key="/home/swiper">
+					<Icon type="pie-chart" />
+					<span>首页轮播图</span>
+				</Menu.Item>
+				<Menu.Item key="/home/cabinet">
+					<Icon type="inbox" />
+					<span>洗衣柜管理</span>
+				</Menu.Item>
+				<Menu.Item key="/home/clothing">
+					<Icon type="inbox" />
+					<span>衣物管理</span>
+				</Menu.Item>
+				<Menu.Item key="/home/order">
 					<Icon type="inbox" />
 					<span>订单管理</span>
 				</Menu.Item>
-				<Menu.Item key="/home/shop/goods">
+				<Menu.Item key="/home/intergral">
 					<Icon type="inbox" />
-					<span>菜品管理</span>
+					<span>积分兑换管理</span>
 				</Menu.Item>
-				<Menu.Item key="/home/shop/data">
+				<Menu.Item key="/home/member">
 					<Icon type="inbox" />
-					<span>销售数据</span>
+					<span>会员管理</span>
 				</Menu.Item>
-				<Menu.Item key="/home/shop/my">
+				<Menu.Item key="/home/exception">
 					<Icon type="inbox" />
-					<span>我的厨房</span>
+					<span>柜子使用记录</span>
 				</Menu.Item>
-				<Menu.Item key="/home/shop/bill">
+				<Menu.Item key="/home/options">
 					<Icon type="inbox" />
-					<span>提现管理</span>
+					<span>意见反馈</span>
 				</Menu.Item>
 			</Menu>
 		);

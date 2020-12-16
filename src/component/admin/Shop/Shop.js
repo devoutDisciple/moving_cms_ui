@@ -160,12 +160,8 @@ class Shop extends React.Component {
 				render: (text, record) => {
 					return (
 						<span className="common_table_span">
-							<a href="javascript:;" onClick={this.controllerEditorDialog.bind(this, record)}>
-								修改
-							</a>
-							<a href="javascript:;" onClick={this.controllerMapDialogVisible.bind(this, record)}>
-								位置录入
-							</a>
+							<a onClick={this.controllerEditorDialog.bind(this, record)}>修改</a>
+							<a onClick={this.controllerMapDialogVisible.bind(this, record)}>位置录入</a>
 							<Popconfirm
 								placement="top"
 								title="是否确认删除"
@@ -173,14 +169,8 @@ class Shop extends React.Component {
 								okText="确认"
 								cancelText="取消"
 							>
-								<a href="javascript:;">删除</a>
+								<a>删除</a>
 							</Popconfirm>
-							<a href="javascript:;" onClick={this.modifyAccount.bind(this, record)}>
-								修改账户
-							</a>
-							<a href="javascript:;" onClick={this.getMore.bind(this, record)}>
-								更多
-							</a>
 						</span>
 					);
 				},

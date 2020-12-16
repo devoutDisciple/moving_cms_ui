@@ -1,11 +1,15 @@
 import React from 'react';
-import { Row, Col, Button } from 'antd';
+import { Row, Col, DatePicker } from 'antd';
 import request from '../../../request/AxiosRequest';
 import echartsTheme from '../../../util/echartsTheme.js';
 import echarts from 'echarts';
 import PayType from './PayType';
 import OrderType from './OrderType';
+import moment from 'moment';
 import './index.less';
+
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY-MM-DD';
 
 export default class Order extends React.Component {
 	constructor(props) {
@@ -26,8 +30,8 @@ export default class Order extends React.Component {
 			cabinetUseTimes: 0,
 			cabinetUseErrorTimes: 0,
 		},
-		salesType: 1,
-		moneyType: 1,
+		salesNum: 0,
+		moneyNum: 0,
 		salesCharts: false, // 是否展示图表
 		moneyCharts: false, // 是否展示图表
 	};
@@ -35,10 +39,10 @@ export default class Order extends React.Component {
 	async componentDidMount() {
 		// 获取订单数量汇总
 		await this.getOrderNumData();
-		// 获取订单数量根据时间
-		await this.getOrderNumDataByTime(1);
-		// 获取金额数据汇总
-		await this.getMoneyNumDataByTime(1);
+		let startTime = moment(moment().subtract(7, 'days')).format(dateFormat);
+		let endTime = moment().format(dateFormat);
+		await this.onSearchSalesData([startTime, endTime]);
+		await this.getMoneyNumDataByTime([startTime, endTime]);
 	}
 
 	// 获取订单数据汇总
@@ -48,58 +52,50 @@ export default class Order extends React.Component {
 		this.setState({ dataNum: data });
 	}
 
-	// 获取订单数据汇总
-	async getOrderNumDataByTime(type) {
-		let res = await request.get('/order/getSalesByTime', { type: type });
-		echarts.registerTheme('walden', echartsTheme);
-		let myChart = echarts.init(document.getElementById('data_member1'), 'walden');
-		let data = res.data || [],
-			echartsData = [];
-		data.map((item) => {
-			echartsData.push({ value: [item.days, item.count] });
-		});
-		if (echartsData.length == 0) return this.setState({ salesCharts: false });
-		let option = this.renderCommonOption('{value} 单', '订单量', echartsData);
-		this.setState({ salesCharts: true }, () => {
-			myChart.setOption(option);
-		});
+	// 获取单位时间内订单数据
+	async onSearchSalesData(value) {
+		if (value) {
+			let startTime = moment(value[0]).format(dateFormat),
+				endTime = moment(value[1]).format(dateFormat),
+				salesNum = 0;
+			let res = await request.get('/order/getSalesByRange', { startTime, endTime });
+			echarts.registerTheme('walden', echartsTheme);
+			let myChart = echarts.init(document.getElementById('data_member1'), 'walden');
+			let data = res.data || [],
+				echartsData = [];
+			data.map((item) => {
+				salesNum += Number(item.count);
+				echartsData.push({ value: [moment(item.days).format(dateFormat), Number(item.count)] });
+			});
+			if (echartsData.length == 0) return this.setState({ salesCharts: false });
+			let option = this.renderCommonOption('{value} 单', '订单量', echartsData);
+			this.setState({ salesCharts: true, salesNum }, () => {
+				myChart.setOption(option);
+			});
+		}
 	}
 
 	// 获取金额数据汇总
-	async getMoneyNumDataByTime(type) {
-		let res = await request.get('/bill/getMoneyNumByTime', { type: type });
-		echarts.registerTheme('walden', echartsTheme);
-		let myChart = echarts.init(document.getElementById('data_member2'), 'walden');
-		let data = res.data || [],
-			echartsData = [];
-		data.map((item) => {
-			echartsData.push({ value: [item.days, Number(item.money)] });
-		});
-		if (echartsData.length == 0) return this.setState({ moneyCharts: false });
-		let option = this.renderCommonOption('{value} 元', '付款金额', echartsData);
-		this.setState({ moneyCharts: true }, () => {
-			myChart.setOption(option);
-		});
-	}
-
-	// 点击销售量按钮
-	async onClickSalesBtn(type) {
-		this.setState(
-			{
-				salesType: type,
-			},
-			() => this.getOrderNumDataByTime(type),
-		);
-	}
-
-	// 点击销售额按钮
-	async onClickMoneyBtn(type) {
-		this.setState(
-			{
-				moneyType: type,
-			},
-			() => this.getMoneyNumDataByTime(type),
-		);
+	async getMoneyNumDataByTime(value) {
+		if (value) {
+			let startTime = moment(value[0]).format(dateFormat),
+				endTime = moment(value[1]).format(dateFormat),
+				moneyNum = 0;
+			let res = await request.get('/order/getMoneyByRange', { startTime, endTime });
+			echarts.registerTheme('walden', echartsTheme);
+			let myChart = echarts.init(document.getElementById('data_member2'), 'walden');
+			let data = res.data || [],
+				echartsData = [];
+			data.map((item) => {
+				moneyNum += Number(item.count);
+				echartsData.push({ value: [moment(item.days).format(dateFormat), Number(item.count)] });
+			});
+			if (echartsData.length == 0) return this.setState({ moneyCharts: false });
+			let option = this.renderCommonOption('{value} 元', '付款金额', echartsData);
+			this.setState({ moneyCharts: true, moneyNum: moneyNum.toFixed(2) }, () => {
+				myChart.setOption(option);
+			});
+		}
 	}
 
 	renderCommonOption(yAxisFormatter, seriesName, data) {
@@ -137,7 +133,7 @@ export default class Order extends React.Component {
 	}
 
 	render() {
-		let { moneyType, salesType, salesCharts, moneyCharts, dataNum } = this.state;
+		let { salesCharts, moneyCharts, dataNum, salesNum, moneyNum } = this.state;
 		let successRate = '0%';
 		if (dataNum.cabinetUseTimes > 0) {
 			successRate =
@@ -183,24 +179,14 @@ export default class Order extends React.Component {
 						<Row className="data_common_detail_title">
 							<div className="data_common_detail_title_left">订单量统计</div>
 							<div className="data_common_detail_title_right">
-								<Button
-									type={salesType == 1 ? 'primary' : null}
-									onClick={this.onClickSalesBtn.bind(this, 1)}
-								>
-									最近七天
-								</Button>
-								<Button
-									type={salesType == 2 ? 'primary' : null}
-									onClick={this.onClickSalesBtn.bind(this, 2)}
-								>
-									最近一月
-								</Button>
-								<Button
-									type={salesType == 3 ? 'primary' : null}
-									onClick={this.onClickSalesBtn.bind(this, 3)}
-								>
-									最近一年
-								</Button>
+								<RangePicker
+									defaultValue={[
+										moment(moment().subtract(7, 'days'), dateFormat),
+										moment(new Date(), dateFormat),
+									]}
+									onChange={this.onSearchSalesData.bind(this)}
+								/>
+								<span style={{ marginLeft: '10px', fontSize: '14px' }}> 共: {salesNum} 单</span>
 							</div>
 						</Row>
 						<Row id="data_member1" className="data_common_detail_content" />
@@ -210,24 +196,14 @@ export default class Order extends React.Component {
 						<Row className="data_common_detail_title">
 							<div className="data_common_detail_title_left">销售额统计</div>
 							<div className="data_common_detail_title_right">
-								<Button
-									type={moneyType == 1 ? 'primary' : null}
-									onClick={this.onClickMoneyBtn.bind(this, 1)}
-								>
-									最近七天
-								</Button>
-								<Button
-									type={moneyType == 2 ? 'primary' : null}
-									onClick={this.onClickMoneyBtn.bind(this, 2)}
-								>
-									最近一月
-								</Button>
-								<Button
-									type={moneyType == 3 ? 'primary' : null}
-									onClick={this.onClickMoneyBtn.bind(this, 3)}
-								>
-									最近一年
-								</Button>
+								<RangePicker
+									defaultValue={[
+										moment(moment().subtract(7, 'days'), dateFormat),
+										moment(new Date(), dateFormat),
+									]}
+									onChange={this.getMoneyNumDataByTime.bind(this)}
+								/>
+								<span style={{ marginLeft: '10px', fontSize: '14px' }}> 共: {moneyNum} 元</span>
 							</div>
 						</Row>
 						<Row id="data_member2" className="data_common_detail_content" />

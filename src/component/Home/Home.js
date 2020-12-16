@@ -12,6 +12,8 @@ import logo from '../../asserts/logo.png';
 
 // 轮播图管理
 import Swiper from '../admin/Swiper/Swiper';
+// 广告管理
+import Adver from '../admin/Adver/Adver';
 // 区域管理
 import Area from '../admin/Area/Area';
 // 商店管理
@@ -60,6 +62,7 @@ export default class MyLayout extends React.Component {
 							{role == 1 ? (
 								<Switch>
 									<Route exact path="/home" component={Shop} />
+									<Route path="/home/adver" component={Adver} />
 									<Route path="/home/shop" component={Shop} />
 									<Route path="/home/account" component={Account} />
 									<Route path="/home/swiper" component={Swiper} />

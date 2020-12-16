@@ -65,6 +65,7 @@ export default {
 		}
 		return data;
 	},
+	// 1-订单支付(order) 2-上门取衣支付(clothing) 3-充值(recharge) 4-购买会员(member) 5:保存衣物收取一元(save_clothing)
 	// 支付类型
 	filterPayType: function (status) {
 		let data = '';
@@ -80,6 +81,9 @@ export default {
 				break;
 			case 'member':
 				data = '购买会员';
+				break;
+			case 'save_clothing':
+				data = '使用柜子';
 				break;
 			default:
 				data = '--';

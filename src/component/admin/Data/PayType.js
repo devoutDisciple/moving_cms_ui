@@ -22,7 +22,6 @@ class Evaluate extends React.Component {
 	// 获取订单数据汇总
 	async getOrderNumDataByTime() {
 		let res = await Request.get('/bill/getAllMoneyByType');
-		console.log(res, 8888);
 		echarts.registerTheme('walden', echartsTheme);
 		let myChart = echarts.init(document.getElementById('bill_type'), 'walden');
 		let data = res.data || [];
