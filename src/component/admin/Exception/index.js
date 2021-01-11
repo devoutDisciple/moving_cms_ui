@@ -58,7 +58,7 @@ class Order extends React.Component {
 					key: 'cabinetUrl',
 					align: 'center',
 					render: (text, record) => {
-						return <img className="common_table_img" src={`${config.imgUrl}/${record.cabinetUrl}`} />;
+						return <img className="common_table_img" src={`${config.baseUrl}/${record.cabinetUrl}`} />;
 					},
 				},
 				{

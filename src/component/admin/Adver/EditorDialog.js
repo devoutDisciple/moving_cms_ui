@@ -88,7 +88,7 @@ class EditorDialog extends React.Component {
 					<Row className="campus_container">
 						<Col span={4} className="campus_container_label"></Col>
 						<Col span={20} className="swiper_dialog_preview">
-							<img src={`${config.imgUrl}/advertisement.png`} />
+							<img src={`${config.baseUrl}/advertisement.png`} />
 						</Col>
 					</Row>
 				</Modal>

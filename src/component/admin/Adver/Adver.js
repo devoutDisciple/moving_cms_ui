@@ -11,7 +11,12 @@ export default class Adver extends React.Component {
 	state = {
 		data: [{ key: 1, name: 1 }],
 		visible: false,
+		num: 1,
 	};
+
+	onSearch() {
+		this.setState({ num: this.state.num + 1 });
+	}
 
 	// 控制弹框开关
 	controllerEditorDialog() {
@@ -26,7 +31,7 @@ export default class Adver extends React.Component {
 				key: 'url',
 				align: 'center',
 				render: () => {
-					return <img className="common_table_img" src={`${config.imgUrl}/advertisement.png`} />;
+					return <img className="common_table_img" src={`${config.baseUrl}/advertisement.png`} />;
 				},
 			},
 			{
@@ -49,7 +54,12 @@ export default class Adver extends React.Component {
 				<div className="common_content">
 					<Table bordered dataSource={data} columns={columns} pagination={false} />
 				</div>
-				{visible ? <EditorDialog controllerEditorDialog={this.controllerEditorDialog.bind(this)} /> : null}
+				{visible ? (
+					<EditorDialog
+						onSearch={this.onSearch.bind(this)}
+						controllerEditorDialog={this.controllerEditorDialog.bind(this)}
+					/>
+				) : null}
 			</div>
 		);
 	}

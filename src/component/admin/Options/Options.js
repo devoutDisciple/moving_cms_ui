@@ -67,7 +67,7 @@ class OptionsScreen extends React.Component {
 					key: 'photo',
 					align: 'center',
 					render: (text) => {
-						return <img style={{ width: '33px' }} src={`${config.imgUrl}/${text}`} />;
+						return <img style={{ width: '33px' }} src={`${config.baseUrl}/${text}`} />;
 					},
 				},
 				{

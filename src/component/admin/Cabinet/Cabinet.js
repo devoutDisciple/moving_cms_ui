@@ -96,7 +96,7 @@ class Swiper extends React.Component {
 					key: 'url',
 					align: 'center',
 					render: (text, record) => {
-						return <img className="common_table_img" src={`${config.imgUrl}/${record.url}`} />;
+						return <img className="common_table_img" src={`${config.baseUrl}/${record.url}`} />;
 					},
 				},
 				{

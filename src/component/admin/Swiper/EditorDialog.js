@@ -147,7 +147,7 @@ class EditorDialog extends React.Component {
 						<Row className="campus_container">
 							<Col span={4} className="campus_container_label"></Col>
 							<Col span={20} className="swiper_dialog_preview">
-								<img src={`${Config.imgUrl}/${editData.url}`} />
+								<img src={`${Config.baseUrl}/${editData.url}`} />
 							</Col>
 						</Row>
 					</Form>

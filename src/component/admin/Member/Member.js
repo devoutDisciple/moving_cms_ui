@@ -121,7 +121,7 @@ class Member extends React.Component {
 					key: 'avatarUrl',
 					align: 'center',
 					render: (text, record) => {
-						return <img className="common_table_img" src={`${config.imgUrl}/${record.photo}`} />;
+						return <img className="common_table_img" src={`${config.baseUrl}/${record.photo}`} />;
 					},
 				},
 				{
