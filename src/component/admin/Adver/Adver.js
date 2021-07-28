@@ -11,11 +11,11 @@ export default class Adver extends React.Component {
 	state = {
 		data: [{ key: 1, name: 1 }],
 		visible: false,
-		num: 1,
+		url: 'adver/advertisement.png',
 	};
 
 	onSearch() {
-		this.setState({ num: this.state.num + 1 });
+		this.setState({ url: this.state.url });
 	}
 
 	// 控制弹框开关
@@ -24,6 +24,7 @@ export default class Adver extends React.Component {
 	}
 
 	render() {
+		const { url } = this.state;
 		const columns = [
 			{
 				title: '广告图',
@@ -31,7 +32,7 @@ export default class Adver extends React.Component {
 				key: 'url',
 				align: 'center',
 				render: () => {
-					return <img className="common_table_img" src={`${config.baseUrl}/advertisement.png`} />;
+					return <img className="common_table_img" src={`${config.baseUrl}/${url}`} />;
 				},
 			},
 			{

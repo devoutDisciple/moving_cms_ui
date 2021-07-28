@@ -10,7 +10,7 @@ module.exports = {
 		library: '[name]_library',
 	},
 	entry: {
-		'lib': _.filter(_.keys(pkg.dependencies), (dependency) => {
+		lib: _.filter(_.keys(pkg.dependencies), (dependency) => {
 			return !_.includes('@types', dependency) && !_.includes('babel', dependency);
 		}),
 	},

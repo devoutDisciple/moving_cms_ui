@@ -30,6 +30,8 @@ import Data from '../admin/Data/Data';
 import Options from '../admin/Options/Options';
 // 积分兑换
 import Intergral from '../admin/Intergral/Intergral';
+// 店铺广告
+import ShopAdver from '../admin/ShopAdver/index';
 // 衣物管理
 import Clothing from '../admin/Clothing/Clothing';
 // 账号管理
@@ -72,6 +74,7 @@ export default class MyLayout extends React.Component {
 									<Route path="/home/order" component={Order} />
 									<Route path="/home/intergral" component={Intergral} />
 									<Route path="/home/area" component={Area} />
+									<Route path="/home/shopAdver" component={ShopAdver} />
 									<Route path="/home/data" component={Data} />
 									<Route path="/home/exception" component={Exception} />
 									<Route path="/home/options" component={Options} />

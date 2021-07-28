@@ -52,6 +52,10 @@ export default class MyMenu extends React.Component {
 					<Icon type="inbox" />
 					<span>APP首屏广告</span>
 				</Menu.Item>
+				<Menu.Item key="/home/shopAdver">
+					<Icon type="inbox" />
+					<span>店铺广告</span>
+				</Menu.Item>
 				<Menu.Item key="/home/area">
 					<Icon type="inbox" />
 					<span>区域管理</span>

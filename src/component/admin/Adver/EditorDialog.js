@@ -21,7 +21,7 @@ class EditorDialog extends React.Component {
 					let res = await Request.post('/adver/modify', formData);
 					if (res.data == 'success') {
 						this.props.controllerEditorDialog();
-						this.props.onSearch();
+						location.reload();
 						return message.success('编辑成功');
 					}
 				});
@@ -88,7 +88,7 @@ class EditorDialog extends React.Component {
 					<Row className="campus_container">
 						<Col span={4} className="campus_container_label"></Col>
 						<Col span={20} className="swiper_dialog_preview">
-							<img src={`${config.baseUrl}/advertisement.png`} />
+							<img src={`${config.baseUrl}/adver/advertisement.png`} />
 						</Col>
 					</Row>
 				</Modal>
