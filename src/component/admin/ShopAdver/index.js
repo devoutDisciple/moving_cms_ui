@@ -1,7 +1,9 @@
 import React from 'react';
-import { Button, Table, Popconfirm, message, Select, Form, Col, Input } from 'antd';
+import { Button, Table, Popconfirm, Select, Form, Col } from 'antd';
 import AddDialog from './AddDialog';
+import config from '../../../config/config';
 import Request from '../../../request/AxiosRequest';
+import './index.less';
 const FormItem = Form.Item;
 const { Option } = Select;
 
@@ -14,6 +16,7 @@ class Shop extends React.Component {
 	state = {
 		addDialogVisible: false, // 新增弹框
 		shopList: [], // 商店列表
+		adverList: [], // 列表
 	};
 
 	componentDidMount() {
@@ -29,15 +32,17 @@ class Shop extends React.Component {
 		shopList.map((item) => {
 			item.key = item.id;
 		});
+		console.log(shopList, 888);
 		this.setState({ shopList });
 	}
 
 	// 查询广告图列表
 	async onSearchShopAdverList() {
 		let value = this.props.form.getFieldsValue();
-		console.log(value, 88383);
+		console.log(value, 78923);
 		let advers = await Request.get('/shopAdver/list', value);
 		console.log(advers, 989);
+		this.setState({ adverList: advers.data || [] });
 	}
 
 	// 新增编辑框的显示
@@ -51,12 +56,19 @@ class Shop extends React.Component {
 	onConfirmDelete() {}
 
 	render() {
+		let { shopList, addDialogVisible, adverList } = this.state;
+		const formItemLayout = {
+				labelCol: { span: 8 },
+				wrapperCol: { span: 16 },
+			},
+			{ getFieldDecorator } = this.props.form;
 		const columns = [
 			{
 				title: '店铺名称',
 				dataIndex: 'name',
 				key: 'name',
 				align: 'center',
+				render: (txt, record) => <span>{shopList.filter((item) => item.id === record.shopid)[0]?.name}</span>,
 			},
 			{
 				title: '权重',
@@ -69,6 +81,9 @@ class Shop extends React.Component {
 				dataIndex: 'url',
 				key: 'url',
 				align: 'center',
+				render: (txt, record) => (
+					<img className="shop_adver_img" src={`${config.baseUrl}/adver/${record.url}`} />
+				),
 			},
 
 			{
@@ -93,19 +108,14 @@ class Shop extends React.Component {
 				},
 			},
 		];
-		let { shopList, addDialogVisible } = this.state;
-		const formItemLayout = {
-				labelCol: { span: 8 },
-				wrapperCol: { span: 16 },
-			},
-			{ getFieldDecorator } = this.props.form;
+
 		return (
 			<div className="common">
 				<div className="common_search">
 					<Form className="common_search_form" {...formItemLayout}>
 						<Col span={6}>
 							<FormItem label="店铺名称">
-								{getFieldDecorator('name', { initialValue: -1 })(
+								{getFieldDecorator('shopid', { initialValue: -1 })(
 									<Select onSelect={() => {}} placeholder="请选择">
 										<Option key={-1} value={-1}>
 											全部
@@ -123,7 +133,7 @@ class Shop extends React.Component {
 							</FormItem>
 						</Col>
 						<Col span={6} offset={1}>
-							<Button type="primary" onClick={this.onSearchShopList.bind(this)}>
+							<Button type="primary" onClick={this.onSearchShopAdverList.bind(this)}>
 								查询
 							</Button>
 							<Button type="primary" onClick={this.controllerAddDialog.bind(this)}>
@@ -135,15 +145,21 @@ class Shop extends React.Component {
 				<div className="common_content">
 					<Table
 						bordered
-						dataSource={shopList}
+						rowKey="id"
 						columns={columns}
+						dataSource={adverList}
 						pagination={{
-							total: shopList.length || 0,
+							total: adverList.length || 0,
 							showTotal: (total) => `共 ${total} 条`,
 						}}
 					/>
 				</div>
-				{addDialogVisible && <AddDialog controllerDialog={this.controllerAddDialog.bind(this)} />}
+				{addDialogVisible && (
+					<AddDialog
+						controllerDialog={this.controllerAddDialog.bind(this)}
+						onSearch={this.onSearchShopAdverList.bind(this)}
+					/>
+				)}
 			</div>
 		);
 	}

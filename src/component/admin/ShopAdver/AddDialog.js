@@ -38,7 +38,7 @@ class AddDialog extends React.Component {
 					formData.append('file', blob);
 					formData.append('create_time', moment().format('YYYY-MM-DD HH:mm:ss'));
 					formData.append('sort', Number(values.sort) || 1);
-					let res = await request.post('/swiper/add', formData);
+					let res = await request.post('/shopAdver/add', formData);
 					if (res.data == 'success') {
 						this.props.controllerDialog();
 						this.props.onSearch();
