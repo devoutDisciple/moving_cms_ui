@@ -7,7 +7,9 @@ import EvaluateDialog from './EvaluateDialog';
 import config from '../../../config/config';
 import FilterStatus from '../../../util/FilterStatus';
 import PayDialog from './PayDialog';
+import MoneyDialog from './MoneyDialog';
 import moment from 'moment';
+import './index.less';
 const FormItem = Form.Item;
 const { Option } = Select;
 
@@ -21,6 +23,7 @@ class Member extends React.Component {
 		addressDialogVisible: false, // 地址弹框
 		orderDialogVisible: false, // 全部订单弹框
 		evaluateDialogVisible: false, // 评价信息
+		moneyDialogVisible: false, // 用户余额
 		payDialogVisible: false, // 消费记录信息
 		dialogData: {}, // 弹框需要的信息
 		orderList: [], // 订单信息
@@ -71,6 +74,13 @@ class Member extends React.Component {
 		});
 	}
 
+	// 修改用户余额
+	onOperationMoney(data) {
+		this.setState({ dialogData: data }, () => {
+			this.onControllerMoneyDialog();
+		});
+	}
+
 	// 查看所有评价
 	async onSearchEvaluate(record) {
 		let res = await request.get('/evaluate/getEvaluateByOpenid', { openid: record.openid });
@@ -97,6 +107,13 @@ class Member extends React.Component {
 	onControllerAddressDialog() {
 		this.setState({
 			addressDialogVisible: !this.state.addressDialogVisible,
+		});
+	}
+
+	// 用户余额弹框关闭和打开
+	onControllerMoneyDialog() {
+		this.setState({
+			moneyDialogVisible: !this.state.moneyDialogVisible,
 		});
 	}
 
@@ -212,6 +229,15 @@ class Member extends React.Component {
 						return <span>{moment(record.create_time).format('YYYY-MM-DD HH:mm:ss')}</span>;
 					},
 				},
+				{
+					title: '操作',
+					dataIndex: 'operation',
+					key: 'operation',
+					align: 'center',
+					render: (text, record) => {
+						return <a onClick={this.onOperationMoney.bind(this, record)}>修改余额</a>;
+					},
+				},
 			],
 			{
 				evaluateDialogVisible,
@@ -222,6 +248,7 @@ class Member extends React.Component {
 				userList,
 				orderList,
 				evaluateList,
+				moneyDialogVisible,
 			} = this.state,
 			formItemLayout = {
 				labelCol: { span: 8 },
@@ -275,21 +302,38 @@ class Member extends React.Component {
 				{addressDialogVisible ? (
 					<AddressDialog
 						data={dialogData}
+						onSearch={this.onSearchMember.bind(this)}
 						onControllerAddressDialog={this.onControllerAddressDialog.bind(this)}
 					/>
 				) : null}
 				{payDialogVisible && (
-					<PayDialog data={dialogData} onControllerAddressDialog={this.onControllerPayDialog.bind(this)} />
+					<PayDialog
+						data={dialogData}
+						onSearch={this.onSearchMember.bind(this)}
+						onControllerAddressDialog={this.onControllerPayDialog.bind(this)}
+					/>
 				)}
 				{orderDialogVisible ? (
-					<OrderDialog data={orderList} onControllerOrderDialog={this.onControllerOrderDialog.bind(this)} />
+					<OrderDialog
+						data={orderList}
+						onSearch={this.onSearchMember.bind(this)}
+						onControllerOrderDialog={this.onControllerOrderDialog.bind(this)}
+					/>
 				) : null}
 				{evaluateDialogVisible ? (
 					<EvaluateDialog
 						data={evaluateList}
+						onSearch={this.onSearchMember.bind(this)}
 						onControllerEvaluateDialog={this.onControllerEvaluateDialog.bind(this)}
 					/>
 				) : null}
+				{moneyDialogVisible && (
+					<MoneyDialog
+						data={dialogData}
+						onSearch={this.onSearchMember.bind(this)}
+						onControllerDialog={this.onControllerMoneyDialog.bind(this)}
+					/>
+				)}
 			</div>
 		);
 	}

@@ -39,9 +39,7 @@ class Shop extends React.Component {
 	// 查询广告图列表
 	async onSearchShopAdverList() {
 		let value = this.props.form.getFieldsValue();
-		console.log(value, 78923);
 		let advers = await Request.get('/shopAdver/list', value);
-		console.log(advers, 989);
 		this.setState({ adverList: advers.data || [] });
 	}
 
@@ -53,7 +51,10 @@ class Shop extends React.Component {
 	}
 
 	// 确认删除
-	onConfirmDelete() {}
+	async onConfirmDelete(record) {
+		await Request.post('/shopAdver/delete', { id: record.id });
+		this.onSearchShopAdverList();
+	}
 
 	render() {
 		let { shopList, addDialogVisible, adverList } = this.state;

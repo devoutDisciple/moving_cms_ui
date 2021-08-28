@@ -73,7 +73,7 @@ class AddDialog extends React.Component {
 			dom.innerHTML = '';
 			dom.appendChild(image);
 			self.cropper = new Cropper(image, {
-				aspectRatio: 16 / 8,
+				aspectRatio: 1 / 1.5,
 				zoomable: false,
 			});
 		};
