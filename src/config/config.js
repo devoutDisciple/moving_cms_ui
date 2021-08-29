@@ -1,5 +1,5 @@
-// const env = true; // 线上环境
-const env = false; // 线下环境
+const env = true; // 线上环境
+// const env = false; // 线下环境
 
 export default {
 	site: {

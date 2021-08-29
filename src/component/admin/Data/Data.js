@@ -155,9 +155,7 @@ export default class Order extends React.Component {
 					<div className="data_cart_chunk">
 						<div className="data_cart_chunk_title">总收入(元)</div>
 						<div className="data_cart_chunk_number">{dataNum.totalMoney || 0}</div>
-						<div className="data_cart_chunk_bottom">
-							今日：{dataNum.todayMoney || 0} 修正金额：{dataNum.updateMoney || 0}
-						</div>
+						<div className="data_cart_chunk_bottom">今日：{dataNum.todayMoney || 0}</div>
 					</div>
 					<div className="data_cart_chunk">
 						<div className="data_cart_chunk_title">柜子格口数量</div>

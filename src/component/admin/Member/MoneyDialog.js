@@ -55,7 +55,7 @@ class MoneyDialog extends React.Component {
 					onCancel={this.handleCancel.bind(this)}
 				>
 					<div className="member_desc">
-						<span className="member_desc_title">会员昵称：</span>
+						<span className="member_desc_title">会员名称：</span>
 						<span className="member_desc_value">{data.username}</span>
 						<span className="member_desc_title">当前余额：</span>
 						<span className="member_desc_value">{data.balance}</span>
