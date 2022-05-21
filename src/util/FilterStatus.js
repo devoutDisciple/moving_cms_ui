@@ -65,7 +65,7 @@ export default {
 		}
 		return data;
 	},
-	// 1-订单支付(order) 2-上门取衣支付(clothing) 3-充值(recharge) 4-购买会员(member) 5:保存衣物收取一元(save_clothing)
+	// 1-订单支付(order) 2-上门取衣支付(clothing) 3-充值(recharge) 4-购买会员(member) 5:保存衣物收取一元(save_clothing) 6:增加或减少余额（update）
 	// 支付类型
 	filterPayType: function (status) {
 		let data = '';
@@ -85,6 +85,9 @@ export default {
 			case 'save_clothing':
 				data = '使用柜子';
 				break;
+			case 'update':
+				data = '管理员操作';
+				break;
 			default:
 				data = '--';
 		}
@@ -99,6 +102,9 @@ export default {
 				break;
 			case 'wechat':
 				data = '微信';
+				break;
+			case 'account':
+				data = '账户余额';
 				break;
 			default:
 				data = '--';

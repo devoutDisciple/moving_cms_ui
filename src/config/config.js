@@ -8,6 +8,5 @@ export default {
 		latitude: 30.282795, // 纬度
 		name: '浙江省杭州市余杭区五常街道西溪水岸花苑',
 	},
-	baseUrl: env ? 'http://47.107.43.166:8080' : 'http://localhost:8080', // 线上环境
-	imgUrl: env ? 'http://47.107.43.166:8080' : 'http://localhost:8080',
+	baseUrl: env ? 'http://47.107.43.166/movingxiyi' : 'http://localhost:8080', // 线上环境
 };

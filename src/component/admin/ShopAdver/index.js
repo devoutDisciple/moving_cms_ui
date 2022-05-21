@@ -32,7 +32,6 @@ class Shop extends React.Component {
 		shopList.map((item) => {
 			item.key = item.id;
 		});
-		console.log(shopList, 888);
 		this.setState({ shopList });
 	}
 

@@ -45,7 +45,7 @@ export default class PayDialog extends React.Component {
 				align: 'center',
 			},
 			{
-				title: '支付类型',
+				title: '消费类型',
 				dataIndex: 'type',
 				key: 'type',
 				align: 'center',
